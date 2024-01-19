@@ -61,7 +61,7 @@ def main():
         times[i] = time
         time += dt
         
-        # TODO done: update all particle positions ---------------------------------------
+        # TODO done: update all particle positions
         # TODO done: store particle positions in array
         for j, particle in enumerate(particles):
             particle.update_position_2nd(dt, forces[j])
@@ -108,14 +108,14 @@ def main():
     pyplot.show()
 
 
-    # TODO done: add a plot of the position of the sun with time--------------------------------
+    # TODO done: add a plot of the position of the sun with time
     pyplot.title('Sun Trajectory')
     pyplot.ylabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[0, :, 0], positions[0, :, 1])
     pyplot.show()
     
-    # TODO done: add a plot of the orbit of the trajectory of the moon around the earth-----------
+    # TODO done: add a plot of the orbit of the trajectory of the moon around the earth
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
