@@ -13,6 +13,7 @@ s2188899
 import numpy as np
 import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
+import sys
 
 # TODO DONE: Add your basic functions here, or import them from another python file.
 import basic_functions as b_f
@@ -64,6 +65,9 @@ def particles_from_file(filename = "mini_system.txt"):
 def main():
     # Set up simulation parameters:
     # about 10 years of simulation with 1 day timesteps
+    
+    print(sys.argv)
+    
     dt = 0.01  
     numstep = 36500
     
