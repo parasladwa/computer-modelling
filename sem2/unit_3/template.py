@@ -67,9 +67,13 @@ def main():
     # about 10 years of simulation with 1 day timesteps
     dt = 0.01  
     numstep = 36500
-
+    
+    #outfile
+    outfile_name = "outfile.xyz"
+    outfile = open(outfile_name, 'w')
+    
     # Initial conditions of the system
-    particles = generate_simple_solar_system()
+    particles = particles_from_file()
     time = 0.0
 
     # TODO DONE: subtract the centre-of-mass velocity ------is this correct?----------
@@ -91,6 +95,15 @@ def main():
     for i in range(numstep):
         times[i] = time
         time += dt
+        
+        #outfile headers
+        outfile.write(f"{n}\n")
+        outfile.write(f"Point : {i}\n")
+        
+        for particle in particles:
+            outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
+        
+        
         
         # TODO done: update all particle positions
         # TODO done: store particle positions in array
@@ -162,7 +175,6 @@ def main():
 # This python standard code makes it so that the "main"
 # function is only called when you run the file directly,
 # not when you just import it from another python file.
-"""
 if __name__ == "__main__":
     main()
-"""
+
