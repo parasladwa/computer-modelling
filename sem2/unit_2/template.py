@@ -114,7 +114,7 @@ def main():
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[0, :, 0], positions[0, :, 1])
     pyplot.show()
-    
+
     # TODO done: add a plot of the orbit of the trajectory of the moon around the earth
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
