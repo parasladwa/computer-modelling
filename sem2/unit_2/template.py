@@ -1,7 +1,13 @@
 """
-TODO: Update this module docstring to explain the overall purpose of this
-script.
-edit----------------
+TODO: approximate partial solar system simulation
+using verlet integration scheme,
+partial due to smaller number of planets, listed in function below
+plots certain orbits using matplotlib.
+
+uses particle3D class where each instance is a planet
+
+Paras Ladwa
+s2188899
 """
 
 import numpy as np
@@ -31,11 +37,11 @@ def main():
     dt = 0.01  
     numstep = 36500
 
-    # Initial conditions of the system=====================================================
+    # Initial conditions of the system
     particles = generate_simple_solar_system()
     time = 0.0
 
-    # TODO DONE: subtract the centre-of-mass velocity ------from where?----------
+    # TODO DONE: subtract the centre-of-mass velocity ------is this correct?----------
     com_vel = Particle3D.com_velocity(particles)
     for particle in particles:
         particle.velocity -= com_vel
@@ -46,7 +52,7 @@ def main():
     energy = np.zeros(numstep)
     positions = np.zeros((n, numstep, 3))
 
-    # TODO DONE: compute initial forces for first loop iteration  ------------------
+    # TODO done: compute initial forces for first loop iteration
     separations = b_f.compute_separations(particles)
     forces, potential = b_f.compute_forces_potential(particles, separations)
 
@@ -55,29 +61,29 @@ def main():
         times[i] = time
         time += dt
         
-        # TODO: update all particle positions ---------------------------------------
-        # TODO: store particle positions in array
+        # TODO done: update all particle positions ---------------------------------------
+        # TODO done: store particle positions in array
         for j, particle in enumerate(particles):
             particle.update_position_2nd(dt, forces[j])
             positions[j][i] = particle.position #maybe error here
             
         
-        # TODO: get new separations and new forces on all particles, and the potential ---------
+        # TODO done: get new separations and new forces on all particles, and the potential
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
         
         
-        # TODO: update all particle velocities -----------------------------------------
+        # TODO done: update all particle velocities
         for k, particle in enumerate(particles):
             particle.update_velocity(dt, forces[k])
             
         
         
-        # TODO DONE: replace forces with new forces for next iteration ---------------------------
+        # TODO done: replace forces with new forces for next iteration
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
     
-        # TODO DONE: compute the kinetic energy and save the total energy ---------------------
+        # TODO done: compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles)
 
         
@@ -102,23 +108,23 @@ def main():
     pyplot.show()
 
 
-    # TODO: add a plot of the position of the sun with time--------------------------------
+    # TODO done: add a plot of the position of the sun with time--------------------------------
     pyplot.title('Sun Trajectory')
     pyplot.ylabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[0, :, 0], positions[0, :, 1])
     pyplot.show()
     
-    # TODO: add a plot of the orbit of the trajectory of the moon around the earth-----------
+    # TODO done: add a plot of the orbit of the trajectory of the moon around the earth-----------
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[3, :, 0] - positions[2, :, 0], positions[3, :, 1] - positions[2, :, 1])
     pyplot.show()
+
     # You can add other useful plots here to check the system.
+
     
-    
-    # TODO: add a plot of the orbit of the trajectory of the moon around the earth-----------
 
 
 
