@@ -12,7 +12,6 @@ s2188899
 
 import numpy as np
 import matplotlib.pyplot as pyplot
-
 from particle3D import Particle3D
 
 # TODO DONE: Add your basic functions here, or import them from another python file.
