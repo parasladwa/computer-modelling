@@ -29,6 +29,37 @@ def generate_simple_solar_system():
     ]
     return particles
 
+
+
+
+def particles_from_file(filename = "mini_system.txt"):
+    '''
+    Parameters
+    ----------
+    filename : str, opt
+        filename of particles
+        . The default is "mini_system.txt".
+
+    Returns
+    -------
+    particles : class
+        list of instances of particles, Particle3D
+
+    '''
+    
+    particles = []
+    
+    file = open(filename, 'r')
+    f = file.readlines()
+    
+    for particle in f:
+        particles.append(Particle3D.read_line(particle))
+    
+    return particles
+        
+    
+
+
     
     
 def main():
@@ -131,6 +162,7 @@ def main():
 # This python standard code makes it so that the "main"
 # function is only called when you run the file directly,
 # not when you just import it from another python file.
+"""
 if __name__ == "__main__":
     main()
-
+"""
