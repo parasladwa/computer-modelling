@@ -98,7 +98,7 @@ def main():
         
         #outfile headers
         outfile.write(f"{n}\n")
-        outfile.write(f"Point : {i}\n")
+        outfile.write(f"Point = {i}\n")
         
         for particle in particles:
             outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
