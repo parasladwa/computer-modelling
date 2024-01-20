@@ -80,7 +80,7 @@ def main():
         if len(sys.argv) == 6:
             extra_out = sys.argv(5)
     
-        
+        print("SYS ARGVS OK")
     else:
         print("Incorrect sys argv's\ncorrect form as follows :")
         print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
