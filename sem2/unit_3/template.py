@@ -66,17 +66,35 @@ def main():
     # Set up simulation parameters:
     # about 10 years of simulation with 1 day timesteps
     
-    print(sys.argv)
+    # numstep dt inputfile outputxyz 
+    # %run template.py 36500 0.01 mini_system.txt outfile.xyz
     
-    dt = 0.01  
-    numstep = 36500
+    if len(sys.argv) in [5, 6]:
+        
+        numstep = int(sys.argv[1])
+        dt = float(sys.argv[2])
+        particle_file = sys.argv[3]
+        outfile_name = sys.argv[4]
+        
+        
+        if len(sys.argv) == 6:
+            extra_out = sys.argv(5)
     
-    #outfile
-    outfile_name = "outfile.xyz"
+        
+    else:
+        print("Incorrect sys argv's\ncorrect form as follows :")
+        print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
+        sys.exit(1)
+        
+
+
+
+    
+    #open outfile
     outfile = open(outfile_name, 'w')
     
     # Initial conditions of the system
-    particles = particles_from_file()
+    particles = particles_from_file(particle_file)
     time = 0.0
 
     # TODO DONE: subtract the centre-of-mass velocity ------is this correct?----------
