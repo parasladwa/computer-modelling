@@ -82,7 +82,7 @@ def main():
     
         print("SYS ARGVS OK")
     else:
-        print("Incorrect sys argv's\ncorrect form as follows :")
+        print("Incorrect sys argv's\nCorrect form as follows :")
         print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
         sys.exit(1)
         
@@ -118,12 +118,13 @@ def main():
         time += dt
         
         #outfile headers
-        outfile.write(f"{n}\n")
-        outfile.write(f"Point = {i}\n")
-        
-        
-        for particle in particles:
-            outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
+        if i%100 == 0:
+            outfile.write(f"{n}\n")
+            outfile.write(f"Point = {i}\n")
+            
+            
+            for particle in particles:
+                outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
         
         
         # TODO done: update all particle positions
