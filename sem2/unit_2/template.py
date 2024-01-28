@@ -32,6 +32,12 @@ def generate_simple_solar_system():
     
     
 def main():
+    '''
+    implementing verlet velocity integration scheme
+    to reduced solar system, running simulation of a year,
+    plotting appropriate positions and energies.
+
+    '''
 
     
     # Set up simulation parameters:
@@ -110,25 +116,21 @@ def main():
     pyplot.show()
 
 
-    # TODO done: add a plot of the position of the sun with time
+    #plot of the position of the sun with time
     pyplot.title('Sun Trajectory')
     pyplot.ylabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[0, :, 0], positions[0, :, 1])
     pyplot.show()
 
-    # TODO done: add a plot of the orbit of the trajectory of the moon around the earth
+    #plot of the orbit of the trajectory of the moon around the earth
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[3, :, 0] - positions[2, :, 0], positions[3, :, 1] - positions[2, :, 1])
     pyplot.show()
 
-    # You can add other useful plots here to check the system.
-
     
-
-
 
 # This python standard code makes it so that the "main"
 # function is only called when you run the file directly,
