@@ -97,7 +97,7 @@ def main():
     particles = particles_from_file(particle_file)
     time = 0.0
 
-    # TODO DONE: subtract the centre-of-mass velocity ------is this correct?----------
+    #subtract the centre-of-mass velocity
     com_vel = Particle3D.com_velocity(particles)
     for particle in particles:
         particle.velocity -= com_vel
@@ -108,7 +108,7 @@ def main():
     energy = np.zeros(numstep)
     positions = np.zeros((n, numstep, 3))
 
-    # TODO done: compute initial forces for first loop iteration
+    #compute initial forces for first loop iteration
     separations = b_f.compute_separations(particles)
     forces, potential = b_f.compute_forces_potential(particles, separations)
 
@@ -118,7 +118,7 @@ def main():
         time += dt
         
         #outfile headers
-        if i%100 == 0:
+        if i%1000 == 0:
             outfile.write(f"{n}\n")
             outfile.write(f"Point = {i}\n")
             
@@ -187,8 +187,13 @@ def main():
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[3, :, 0] - positions[2, :, 0], positions[3, :, 1] - positions[2, :, 1])
     pyplot.show()
-
-    # You can add other useful plots here to check the system.
+    
+    # You can add other useful plots here to check the system.
+    
+    
+    
+    outfile.close()
+    
 
     
 

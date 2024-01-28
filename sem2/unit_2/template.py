@@ -1,5 +1,5 @@
 """
-TODO: approximate partial solar system simulation
+approximate partial solar system simulation
 using verlet integration scheme,
 partial due to smaller number of planets, listed in function below
 plots certain orbits using matplotlib.
@@ -32,6 +32,8 @@ def generate_simple_solar_system():
     
     
 def main():
+
+    
     # Set up simulation parameters:
     # about 10 years of simulation with 1 day timesteps
     dt = 0.01  
