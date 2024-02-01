@@ -177,22 +177,32 @@ def main():
     
     
     def get_positions(particle_label):
-        index = particle_dict[particle_label]
-        data = positions[1, :]
-        data = np.transpose(data)
-        return data[0]
+        '''
+        Parameters
+        ----------
+        particle_label : str
+            name of particle (particle.label)
+
+        Returns
+        -------
+        data : np array
+            list of positions of particle throughout time
+            such that data[x] is all the x values of the 
+            position throughout the simulation
         
-    
-    print(positions[1, :, 0], "first")
-    
-    get = get_positions("Sun")
-    print(get)
-    
-    
+        '''
+        index = particle_dict[particle_label] + 1
+        data = positions[index, :]  
+        data = np.transpose(data)
+        return data
     
     
+    print(f"\n\nearth x = {positions[2, :, 0]}")
+    print(f"earth y = {positions[2, :, 1]}")
     
+    print(f"earth y = {get_positions('Earth')[1]}")
     
+
     
     
     # Make two plots, of the Mercury - Sun x distance,
@@ -203,11 +213,18 @@ def main():
     pyplot.plot(times, positions[1, :, 0] - positions[0, :, 0])
     pyplot.show()
 
-    pyplot.title('Earth Trajectory')
+    pyplot.title('Earth TrajectoryOG')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[2, :, 0],  positions[2, :, 1])
     pyplot.show()
+    
+    pyplot.title('Earth Trajectory 222222222')
+    pyplot.xlabel('x / AU')
+    pyplot.ylabel('y / AU')
+    pyplot.plot(get_positions("Earth")[0], get_positions("Earth")[1])
+    pyplot.show()
+    #prev 2 plots work, to test get_positions func
 
     pyplot.title('Total Energy')
     pyplot.xlabel('x / days')
