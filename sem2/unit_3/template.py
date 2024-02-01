@@ -182,6 +182,7 @@ def main():
         data = np.transpose(data)
         return data[0]
         
+    
     print(positions[1, :, 0], "first")
     
     get = get_positions("Sun")
