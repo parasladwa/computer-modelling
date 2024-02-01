@@ -15,7 +15,7 @@ import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
 import sys
 
-# TODO DONE: Add your basic functions here, or import them from another python file.
+#import basic functions
 import basic_functions as b_f
 
 
@@ -63,6 +63,12 @@ def particles_from_file(filename = "mini_system.txt"):
     
     
 def main():
+    '''
+    implementing verlet velocity integration scheme
+    to reduced solar system, running simulation of a year,
+    plotting appropriate positions and energies.
+
+    '''
     # Set up simulation parameters:
     # about 10 years of simulation with 1 day timesteps
     
@@ -127,29 +133,29 @@ def main():
                 outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
         
         
-        # TODO done: update all particle positions
-        # TODO done: store particle positions in array
+        #update all particle positions
+        #store particle positions in array
         for j, particle in enumerate(particles):
             particle.update_position_2nd(dt, forces[j])
             positions[j][i] = particle.position #maybe error here
             
         
-        # TODO done: get new separations and new forces on all particles, and the potential
+        #get new separations and new forces on all particles, and the potential
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
         
         
-        # TODO done: update all particle velocities
+        #update all particle velocities
         for k, particle in enumerate(particles):
             particle.update_velocity(dt, forces[k])
             
         
         
-        # TODO done: replace forces with new forces for next iteration
+        #replace forces with new forces for next iteration
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
     
-        # TODO done: compute the kinetic energy and save the total energy
+        #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles)
 
         
@@ -174,14 +180,14 @@ def main():
     pyplot.show()
 
 
-    # TODO done: add a plot of the position of the sun with time
+    #add a plot of the position of the sun with time
     pyplot.title('Sun Trajectory')
     pyplot.ylabel('x / AU')
     pyplot.ylabel('y / AU')
     pyplot.plot(positions[0, :, 0], positions[0, :, 1])
     pyplot.show()
 
-    # TODO done: add a plot of the orbit of the trajectory of the moon around the earth
+    #add a plot of the orbit of the trajectory of the moon around the earth
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
