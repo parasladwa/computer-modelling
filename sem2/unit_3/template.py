@@ -37,8 +37,8 @@ def particles_from_file(filename = "mini_system.txt"):
     Parameters
     ----------
     filename : str, opt
-        filename of particles
-        . The default is "mini_system.txt".
+        filename of particles.
+        The default is "mini_system.txt".
 
     Returns
     -------
@@ -139,7 +139,7 @@ def main():
             particle.update_position_2nd(dt, forces[j])
             positions[j][i] = particle.position #maybe error here
             
-        
+         
         #get new separations and new forces on all particles, and the potential
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
@@ -158,7 +158,42 @@ def main():
         #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles)
 
+
+    
+    '''
+    SORT OUT PLOTS
+    '''
+    
+    
+    
+    #dictionary of particle locations
+    particle_dict = {}
+    for i, particle in enumerate(particles):
+        particle_dict[particle.label] = i
+        particle_dict[i] = particle.label
+    print(particle_dict)
+    
+    
+    
+    
+    def get_positions(particle_label):
+        index = particle_dict[particle_label]
+        data = positions[1, :]
+        data = np.transpose(data)
+        return data[0]
         
+    print(positions[1, :, 0], "first")
+    
+    get = get_positions("Sun")
+    print(get)
+    
+    
+    
+    
+    
+    
+    
+    
     # Make two plots, of the Mercury - Sun x distance,
     # and of the trajectory x-vs-y of the Earth's orbit.
     pyplot.title('Mercury-Sun Location')
