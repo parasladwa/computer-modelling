@@ -124,7 +124,7 @@ def main():
         time += dt
         
         #outfile headers
-        if i%1000 == 0:
+        if i%250 == 0:
             outfile.write(f"{n}\n")
             outfile.write(f"Point = {i}\n")
             
@@ -191,40 +191,30 @@ def main():
             position throughout the simulation
         
         '''
-        index = particle_dict[particle_label] + 1
+        index = particle_dict[particle_label]
         data = positions[index, :]  
         data = np.transpose(data)
-        return data
-    
-    
-    print(f"\n\nearth x = {positions[2, :, 0]}")
-    print(f"earth y = {positions[2, :, 1]}")
-    
-    print(f"earth y = {get_positions('Earth')[1]}")
-    
+        x, y, z = data
+        return x, y, z
 
     
+
     
     # Make two plots, of the Mercury - Sun x distance,
     # and of the trajectory x-vs-y of the Earth's orbit.
     pyplot.title('Mercury-Sun Location')
     pyplot.xlabel('time / days')
     pyplot.ylabel('x / AU')
-    pyplot.plot(times, positions[1, :, 0] - positions[0, :, 0])
+    pyplot.plot(times, get_positions("Mercury")[0] - get_positions("Sun")[0])
     pyplot.show()
 
-    pyplot.title('Earth TrajectoryOG')
+
+    pyplot.title('Earth Trajectory')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
-    pyplot.plot(positions[2, :, 0],  positions[2, :, 1])
+    pyplot.plot(get_positions("Earth")[0],  get_positions("Earth")[1])
     pyplot.show()
-    
-    pyplot.title('Earth Trajectory 222222222')
-    pyplot.xlabel('x / AU')
-    pyplot.ylabel('y / AU')
-    pyplot.plot(get_positions("Earth")[0], get_positions("Earth")[1])
-    pyplot.show()
-    #prev 2 plots work, to test get_positions func
+
 
     pyplot.title('Total Energy')
     pyplot.xlabel('x / days')
@@ -237,16 +227,18 @@ def main():
     pyplot.title('Sun Trajectory')
     pyplot.ylabel('x / AU')
     pyplot.ylabel('y / AU')
-    pyplot.plot(positions[0, :, 0], positions[0, :, 1])
+    pyplot.plot(get_positions("Sun")[0], get_positions("Sun")[1])
     pyplot.show()
+
 
     #add a plot of the orbit of the trajectory of the moon around the earth
     pyplot.title('Moon - Earth Location')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('y / AU')
-    pyplot.plot(positions[3, :, 0] - positions[2, :, 0], positions[3, :, 1] - positions[2, :, 1])
+    pyplot.plot(get_positions("Moon")[0] - get_positions("Earth")[0], get_positions("Moon")[1] - get_positions("Earth")[1])
     pyplot.show()
     
+
     # You can add other useful plots here to check the system.
     
     
