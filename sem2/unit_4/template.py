@@ -171,7 +171,6 @@ def main():
     for i, particle in enumerate(particles):
         particle_dict[particle.label] = i
         particle_dict[i] = particle.label
-    print(particle_dict)
     
     
     
@@ -197,47 +196,48 @@ def main():
         data = np.transpose(data)
         x, y, z = data
         return x, y, z
+    
 
   
 
     
     # Make two plots, of the Mercury - Sun x distance,
     # and of the trajectory x-vs-y of the Earth's orbit.
-    pyplot.title('Mercury-Sun Location')
-    pyplot.xlabel('time / days')
-    pyplot.ylabel('x / AU')
-    pyplot.plot(times, get_positions("Mercury")[0] - get_positions("Sun")[0])
-    pyplot.show()
+    # pyplot.title('Mercury-Sun Location')
+    # pyplot.xlabel('time / days')
+    # pyplot.ylabel('x / AU')
+    # pyplot.plot(times, get_positions("Mercury")[0] - get_positions("Sun")[0])
+    # pyplot.show()
 
 
-    pyplot.title('Earth Trajectory')
-    pyplot.xlabel('x / AU')
-    pyplot.ylabel('y / AU')
-    pyplot.plot(get_positions("Earth")[0],  get_positions("Earth")[1])
-    pyplot.show()
+    # pyplot.title('Earth Trajectory')
+    # pyplot.xlabel('x / AU')
+    # pyplot.ylabel('y / AU')
+    # pyplot.plot(get_positions("Earth")[0],  get_positions("Earth")[1])
+    # pyplot.show()
 
 
-    pyplot.title('Total Energy')
-    pyplot.xlabel('x / days')
-    pyplot.ylabel('Energy / M_earth AU^2 / day^2')
-    pyplot.plot(times, energy)
-    pyplot.show()
+    # pyplot.title('Total Energy')
+    # pyplot.xlabel('x / days')
+    # pyplot.ylabel('Energy / M_earth AU^2 / day^2')
+    # pyplot.plot(times, energy)
+    # pyplot.show()
 
 
-    #add a plot of the position of the sun with time
-    pyplot.title('Sun Trajectory')
-    pyplot.ylabel('x / AU')
-    pyplot.ylabel('y / AU')
-    pyplot.plot(get_positions("Sun")[0], get_positions("Sun")[1])
-    pyplot.show()
+    # #add a plot of the position of the sun with time
+    # pyplot.title('Sun Trajectory')
+    # pyplot.ylabel('x / AU')
+    # pyplot.ylabel('y / AU')
+    # pyplot.plot(get_positions("Sun")[0], get_positions("Sun")[1])
+    # pyplot.show()
 
 
-    #add a plot of the orbit of the trajectory of the moon around the earth
-    pyplot.title('Moon - Earth Location')
-    pyplot.xlabel('x / AU')
-    pyplot.ylabel('y / AU')
-    pyplot.plot(get_positions("Moon")[0] - get_positions("Earth")[0], get_positions("Moon")[1] - get_positions("Earth")[1])
-    pyplot.show()
+    # #add a plot of the orbit of the trajectory of the moon around the earth
+    # pyplot.title('Moon - Earth Location')
+    # pyplot.xlabel('x / AU')
+    # pyplot.ylabel('y / AU')
+    # pyplot.plot(get_positions("Moon")[0] - get_positions("Earth")[0], get_positions("Moon")[1] - get_positions("Earth")[1])
+    # pyplot.show()
     
 
     # You can add other useful plots here to check the system.
@@ -271,37 +271,47 @@ def main():
         perihelion = np.inf #minimum
         aphelion = 0 #maximum
         
-        pos_big = get_positions(big)
-        pos_small = get_positions(small)
+        pos_big = np.transpose(get_positions(big))
+        pos_small = np.transpose(get_positions(small))
         
-        perihelion = 0
-        aphelion = np.inf
         
         for i in range(0, len(pos_big)):
-            
-            distance = abs(pos_big[i] - pos_small[i])
+            distance = np.linalg.norm(pos_big[i] - pos_small[i])                       
             
             if distance < perihelion:
                 perihelion = distance
-                print(i)
             
             if distance > aphelion:
                 aphelion = distance
-                print(i)
         return perihelion, aphelion
     
-    print(helions("Sun", "Earth"))
+    # p, a = helions("Sun", "Earth")
+    # print(f"{p} -- {a} -- SUN EARTH")
     
-    # def helion_lists():
+    
+    
+    
+    
+    
+    def helion_lists():
         
-    #     orbit_sun = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]
+        def printer(p_1, p_2):
+            perihelion, aphelion = helions(p_1, p_2)
+            
+            print(f"\n\nBetween {p_1} and {p_2} :")
+            print(f"    Perihelion   = {perihelion} / AU")
+            print(f"    Aphelion     = {aphelion} / AU")
+
+
+
+        orbit_sun = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]
     
         
-    #     for p in particles:
-    #         if p not in orbit_sun:
-    #             continue
-    #         perihelion = 
-    #         #here
+        for p in particles:
+            if p.label in orbit_sun:
+                printer("Sun", p.label)
+    helion_lists()
+            
         
         
     
