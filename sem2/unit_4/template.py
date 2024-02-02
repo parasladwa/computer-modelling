@@ -348,6 +348,8 @@ def main():
     
     outfile.close()
     
+    fft = np.fft.fft(x)
+    print(fft)
     
     
     """CURVEFIT OPTIMIZATION IS HORRIBLE FOR THIS CASE"""
