@@ -334,12 +334,14 @@ def main():
             
             x.append(i/100)
             #y.append(math.atan(relative[1] / relative[0]))
+            
+            
             y.append(np.dot(initial, relative))
-    
+
             
         return x, y
     #CHECK FOR MOON / EARTH
-    x, y = orbit("Sun", "Earth")
+    x, y = orbit("Earth", "Moon")
     pyplot.title('dotproduct')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('arctan/ AU')
@@ -348,9 +350,7 @@ def main():
     
     outfile.close()
     
-    fft = np.fft.fft(x)
-    print(fft)
-    
+
     
     """CURVEFIT OPTIMIZATION IS HORRIBLE FOR THIS CASE"""
     # def sinusiod(x_, amplitude, omega, phi, const):
