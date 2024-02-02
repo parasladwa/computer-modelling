@@ -176,6 +176,7 @@ def main():
     
     
     
+    
     def get_positions(particle_label):
         '''
         Parameters
@@ -197,7 +198,7 @@ def main():
         x, y, z = data
         return x, y, z
 
-    
+  
 
     
     # Make two plots, of the Mercury - Sun x distance,
@@ -241,6 +242,27 @@ def main():
 
     # You can add other useful plots here to check the system.
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #UNIT 4 WORK
+    def energy_deviation(energies):
+        
+        initial = energies[0]
+        minimum = min(energies)
+        maximum = max(energies)
+        
+        deviation = abs((maximum - minimum)/initial)
+        
+        return deviation
+    
+    print(f"Energy deviation = {energy_deviation(energy)}")
     
     
     outfile.close()
