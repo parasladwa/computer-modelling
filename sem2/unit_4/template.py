@@ -15,6 +15,7 @@ import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
 import sys
 import math
+import scipy.optimize
 
 #import basic functions
 import basic_functions as b_f
@@ -338,14 +339,43 @@ def main():
             
         return x, y
     #CHECK FOR MOON / EARTH
-    x, y = orbit("Sun", "Mercury")
-    pyplot.title('artcan')
+    x, y = orbit("Sun", "Earth")
+    pyplot.title('dotproduct')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('arctan/ AU')
     pyplot.plot(x, y)
     pyplot.show()
     
     outfile.close()
+    
+    
+    
+    """CURVEFIT OPTIMIZATION IS HORRIBLE FOR THIS CASE"""
+    # def sinusiod(x_, amplitude, omega, phi, const):
+    #     return amplitude * np.cos(omega * x_ + phi) + const
+    
+    # def curve_optimization(x, y):
+    #                                                     #[2, 500, 0, 0]
+    #     parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
+    #     omega = (parameters[0][1])
+    #     T = 2*math.pi /omega
+    #     print(f"\nT = {T}")
+        
+    #     global ynew
+    #     ynew = []
+    #     for i in x:
+    #         ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
+    # curve_optimization(x, y)
+        
+
+    # pyplot.title('dotproduct')
+    # pyplot.xlabel('x / AU')
+    # pyplot.ylabel('arctan/ AU')
+    # pyplot.plot(x, y, color='blue')
+    # pyplot.plot(x, ynew, color = 'red') 
+    # pyplot.show()
+        
+            
     
 
     
