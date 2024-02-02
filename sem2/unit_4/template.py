@@ -253,7 +253,6 @@ def main():
     
     #UNIT 4 WORK
     def energy_deviation(energies):
-        
         initial = energies[0]
         minimum = min(energies)
         maximum = max(energies)
@@ -263,6 +262,48 @@ def main():
         return deviation
     
     print(f"Energy deviation = {energy_deviation(energy)}")
+    
+    
+    
+    
+    
+    def helions(big, small):
+        perihelion = np.inf #minimum
+        aphelion = 0 #maximum
+        
+        pos_big = get_positions(big)
+        pos_small = get_positions(small)
+        
+        perihelion = 0
+        aphelion = np.inf
+        
+        for i in range(0, len(pos_big)):
+            
+            distance = abs(pos_big[i] - pos_small[i])
+            
+            if distance < perihelion:
+                perihelion = distance
+                print(i)
+            
+            if distance > aphelion:
+                aphelion = distance
+                print(i)
+        return perihelion, aphelion
+    
+    print(helions("Sun", "Earth"))
+    
+    # def helion_lists():
+        
+    #     orbit_sun = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]
+    
+        
+    #     for p in particles:
+    #         if p not in orbit_sun:
+    #             continue
+    #         perihelion = 
+    #         #here
+        
+        
     
     
     outfile.close()
