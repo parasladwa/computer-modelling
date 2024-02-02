@@ -14,6 +14,7 @@ import numpy as np
 import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
 import sys
+import math
 
 #import basic functions
 import basic_functions as b_f
@@ -295,6 +296,7 @@ def main():
     
     def helion_lists():
         
+        print("n.b. data may be inaccurate due to incomplete orbits")
         def printer(p_1, p_2):
             perihelion, aphelion = helions(p_1, p_2)
             
@@ -313,8 +315,35 @@ def main():
     helion_lists()
             
         
-        
     
+    
+    
+    def orbit(p_1, p_2):
+        
+        positions_1 = np.transpose(get_positions(p_1))
+        positions_2 = np.transpose(get_positions(p_2))
+        
+        initial = positions_1[0] - positions_2[0]
+        
+        x, y = [], []
+        
+        for i in range(0, len(positions_1)):
+            
+            relative = positions_1[i] - positions_2[i]
+            
+            x.append(i/100)
+            #y.append(math.atan(relative[1] / relative[0]))
+            y.append(np.dot(initial, relative))
+    
+            
+        return x, y
+    #CHECK FOR MOON / EARTH
+    x, y = orbit("Sun", "Mercury")
+    pyplot.title('artcan')
+    pyplot.xlabel('x / AU')
+    pyplot.ylabel('arctan/ AU')
+    pyplot.plot(x, y)
+    pyplot.show()
     
     outfile.close()
     
