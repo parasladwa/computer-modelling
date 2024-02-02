@@ -301,15 +301,15 @@ def main():
             print(f"\n\nBetween {p_1} and {p_2} :")
             print(f"    Perihelion   = {perihelion} / AU")
             print(f"    Aphelion     = {aphelion} / AU")
-
-
-
-        orbit_sun = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"]
-    
+   
         
         for p in particles:
-            if p.label in orbit_sun:
+            if p.label != "Sun":
                 printer("Sun", p.label)
+                
+        
+        printer("Earth", "Moon")
+        
     helion_lists()
             
         
