@@ -255,6 +255,18 @@ def main():
     
     #UNIT 4 WORK
     def energy_deviation(energies):
+        '''
+        Parameters
+        ----------
+        energies : np array
+            DESCRIPTION.
+
+        Returns
+        -------
+        deviation : TYPE
+            DESCRIPTION.
+
+        '''
         initial = energies[0]
         minimum = min(energies)
         maximum = max(energies)
@@ -299,11 +311,17 @@ def main():
         
         print("n.b. data may be inaccurate due to incomplete orbits")
         def printer(p_1, p_2):
+            
+            min_label, max_label = "Perihelion", "Aphelion"
+            
+            if "Moon" in [p_1, p_2] and "Earth" in [p_1, p_2]:
+                min_label, max_label = "Perigee", "Apogee"
+            #min, max
             perihelion, aphelion = helions(p_1, p_2)
             
             print(f"\n\nBetween {p_1} and {p_2} :")
-            print(f"    Perihelion   = {perihelion} / AU")
-            print(f"    Aphelion     = {aphelion} / AU")
+            print(f"    {min_label}   = {perihelion} / AU")
+            print(f"    {max_label}   = {aphelion} / AU")
    
         
         for p in particles:
@@ -352,7 +370,7 @@ def main():
     
 
     
-    """CURVEFIT OPTIMIZATION IS HORRIBLE FOR THIS CASE"""
+    """CURVEFIT OPTIMIZATION"""
     def sinusiod(x_, amplitude, omega, phi, const):
         return amplitude * np.cos(omega * x_ + phi) + const
     
