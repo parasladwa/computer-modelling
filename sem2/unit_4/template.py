@@ -341,7 +341,7 @@ def main():
             
         return x, y
     #CHECK FOR MOON / EARTH
-    x, y = orbit("Earth", "Moon")
+    x, y = orbit("Mercury", "Sun")
     pyplot.title('dotproduct')
     pyplot.xlabel('x / AU')
     pyplot.ylabel('arctan/ AU')
@@ -353,29 +353,29 @@ def main():
 
     
     """CURVEFIT OPTIMIZATION IS HORRIBLE FOR THIS CASE"""
-    # def sinusiod(x_, amplitude, omega, phi, const):
-    #     return amplitude * np.cos(omega * x_ + phi) + const
+    def sinusiod(x_, amplitude, omega, phi, const):
+        return amplitude * np.cos(omega * x_ + phi) + const
     
-    # def curve_optimization(x, y):
-    #                                                     #[2, 500, 0, 0]
-    #     parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
-    #     omega = (parameters[0][1])
-    #     T = 2*math.pi /omega
-    #     print(f"\nT = {T}")
-        
-    #     global ynew
-    #     ynew = []
-    #     for i in x:
-    #         ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
-    # curve_optimization(x, y)
+    def curve_optimization(x, y):
+                                                            #[2, 500, 0, 0]
+        parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
+        omega = (parameters[0][1])
+        T = 2*math.pi /omega
+        print(f"\nT = {T}")
+      
+        global ynew
+        ynew = []
+        for i in x:
+            ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
+    curve_optimization(x, y)
         
 
-    # pyplot.title('dotproduct')
-    # pyplot.xlabel('x / AU')
-    # pyplot.ylabel('arctan/ AU')
-    # pyplot.plot(x, y, color='blue')
-    # pyplot.plot(x, ynew, color = 'red') 
-    # pyplot.show()
+    pyplot.title('dotproduct')
+    pyplot.xlabel('time / days')
+    pyplot.ylabel('dot product')
+    pyplot.plot(x, y, color='blue')
+    pyplot.plot(x, ynew, color = 'red') 
+    pyplot.show()
         
             
     
