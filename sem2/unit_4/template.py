@@ -336,66 +336,63 @@ def main():
         
     
     
-    
-    def orbit(p_1, p_2):
+    def curvefit():
         
-        positions_1 = np.transpose(get_positions(p_1))
-        positions_2 = np.transpose(get_positions(p_2))
         
-        initial = positions_1[0] - positions_2[0]
-        
-        x, y = [], []
-        
-        for i in range(0, len(positions_1)):
+        def orbit_dot_product(p_1, p_2):
             
-            relative = positions_1[i] - positions_2[i]
+            positions_1 = np.transpose(get_positions(p_1))
+            positions_2 = np.transpose(get_positions(p_2))
             
-            x.append(i/100)
-            #y.append(math.atan(relative[1] / relative[0]))
+            initial = positions_1[0] - positions_2[0]
             
+            x, y = [], []
             
-            y.append(np.dot(initial, relative))
+            for i in range(0, len(positions_1)):
+                
+                relative = positions_1[i] - positions_2[i]
+                
+                x.append(i/100)
+                #y.append(math.atan(relative[1] / relative[0]))
+                
+                
+                y.append(np.dot(initial, relative))
 
-            
-        return x, y
-    #CHECK FOR MOON / EARTH
-    x, y = orbit("Mercury", "Sun")
-    pyplot.title('dotproduct')
-    pyplot.xlabel('x / AU')
-    pyplot.ylabel('arctan/ AU')
-    pyplot.plot(x, y)
-    pyplot.show()
-    
-    outfile.close()
-    
+                
+            return x, y
+        #CHECK FOR MOON / EARTH
 
-    
-    """CURVEFIT OPTIMIZATION"""
-    def sinusiod(x_, amplitude, omega, phi, const):
-        return amplitude * np.cos(omega * x_ + phi) + const
-    
-    def curve_optimization(x, y):
-                                                            #[2, 500, 0, 0]
-        parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
-        omega = (parameters[0][1])
-        T = 2*math.pi /omega
-        print(f"\nT = {T}")
-      
-        global ynew
-        ynew = []
-        for i in x:
-            ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
-    curve_optimization(x, y)
         
 
-    pyplot.title('dotproduct')
-    pyplot.xlabel('time / days')
-    pyplot.ylabel('dot product')
-    pyplot.plot(x, y, color='blue')
-    pyplot.plot(x, ynew, color = 'red') 
-    pyplot.show()
         
-            
+        """CURVEFIT OPTIMIZATION"""
+        def sinusiod(x_, amplitude, omega, phi, const):
+            return amplitude * np.cos(omega * x_ + phi) + const
+        
+        def curve_optimization(x, y):
+                                                                #[2, 500, 0, 0]
+            parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
+            omega = (parameters[0][1])
+            T = 2*math.pi /omega
+            print(f"\nT = {T}")
+        
+            global ynew
+            ynew = []
+            for i in x:
+                ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
+        
+        x, y = orbit_dot_product("Earth", "Sun")
+        curve_optimization(x, y)
+        
+
+        pyplot.title('dotproduct')
+        pyplot.xlabel('time / days')
+        pyplot.ylabel('dot product')
+        pyplot.plot(x, y, color='blue')
+        pyplot.plot(x, ynew, color = 'red') 
+        pyplot.show()
+        
+    curvefit()  
     
 
     
