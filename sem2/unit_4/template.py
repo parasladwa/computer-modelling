@@ -284,8 +284,7 @@ def main():
             
     def find_central_body(particles, positions):
         
-        
-        def find_com(particles, positions, numstep = 35000):
+        def closest_body(particles, positions, numstep = 1000):
             positions_at_numstep = []
             
             #list of particles at numstep
@@ -298,11 +297,11 @@ def main():
             mass_position = 0
             net_mass = 0
             for i, pos in enumerate(positions_at_numstep):
-                #ith particle corresponds to positions[i]
+                #ith particle corresponds to positions_at_numstep[i]
                 mass_position += particles[i].mass*pos
-                net_mass = particles[i].mass
+                net_mass += particles[i].mass
             com = mass_position/net_mass
-            print(f"center of mass at {numstep} days = {com}")
+            #print(f"center of mass at {numstep/100} days = {com}")
                 
             #find closest particle to com
             closest = [None, np.inf]
@@ -310,19 +309,24 @@ def main():
                 distance = np.linalg.norm(pos - com)
                 if distance < closest[1]:
                     closest = [particles[i], distance]
-            print(f"the closest particle at {numstep} days = {closest[0].label}")
-                
-                
-                
-                
-                
+            #print(f"the closest particle at {numstep/100} days = {closest[0].label}")
             
-            
-        find_com(particles, positions)
-        
-        
+            return closest[0]
+
+        closest_body(particles, positions)
+    
+        #times to check
+        #checking further times as the system
+        #will converge to an equilibrium
+        times_to_check = [round(num/2) for num in np.linspace(round(numstep/2), numstep-1, 10)]
+        closest = []
+        for i in times_to_check:
+            closest.append(closest_body(particles, positions, i))
+                
+        print(closest)
+        print(closest[0])
     find_central_body(particles, positions)
-        
+            
     
     
     
@@ -394,7 +398,6 @@ def main():
     
     
     def curvefit():
-        
         # fail
         def orbit_dot_product(p_1, p_2):
             
@@ -412,15 +415,10 @@ def main():
                 x.append(i/100)
                 #y.append(math.atan(relative[1] / relative[0]))
                 
-                
                 y.append(np.dot(initial, relative))
 
-                
             return x, y
         #CHECK FOR MOON / EARTH
-
-        
-
         
         """CURVEFIT OPTIMIZATION"""
         def sinusiod(x_, amplitude, omega, phi, const):
