@@ -348,19 +348,54 @@ def main():
         else:
             return None
         #come up with messages and what to do with other cases
-        
-    central_body = find_central_body(particles, positions)
+
+
 
     
-    
-    
-    
     def apsides():
-        print(particles)
+
+        central_body = find_central_body(particles, positions)
+
+        #failcase
+        if central_body == None:
+            print(f"No central body was observed\
+                    thus no apsides will be computed")
+            return 0
+        print(f"\nCentral body identified as {central_body.label}")
+        particle_labels = [p.label for p in particles]
+        
+        def calculate_apsides(p1, p2):
+            perihelion = np.inf
+            aphelion = 0
+            posn_1 = np.transpose(get_positions(p1))
+            posn_2 = np.transpose(get_positions(p2))
+            for i in range(0, len(posn_1)):
+                distance = np.linalg.norm(posn_1[i] - posn_2[i])
+                if distance < perihelion:
+                    perihelion = distance
+                if distance > aphelion:
+                    aphelion = distance
+            return perihelion, aphelion
+        
+        
+        if  ("Moon" and "Earth") in particle_labels:
+            perigee, apogee = calculate_apsides("Moon", "Earth")
+            print(f"\nBetween the Moon and Earth :")
+            print(f"    Perigee = {perigee} /AU")
+            print(f"    Apogee = {apogee} /AU")
+            
+        
+        for p in particles:
+            if (p == central_body) or (p.label == "Moon"):
+                continue
+            perihelion, aphelion = calculate_apsides(central_body.label, p.label)
+            print(f"\nBetween {central_body.label} and {p.label} :")
+            print(f"    the Perihelion = {perihelion} /AU")
+            print(f"    the Aphelion = {aphelion} /AU")
+            
     apsides()
-    
-    
-    
+        
+            
     
     
     
@@ -458,7 +493,8 @@ def main():
             global ynew
             ynew = []
             for i in x:
-                ynew.append(sinusiod(i, parameters[0][0], parameters[0][1], parameters[0][2], parameters[0][3]))        
+                ynew.append(sinusiod(i, parameters[0][0], parameters[0][1],\
+                                        parameters[0][2], parameters[0][3]))        
         
         x, y = orbit_dot_product("Earth", "Sun")
         curve_optimization(x, y)
@@ -487,13 +523,13 @@ if __name__ == "__main__":
 
 # energy units
 # label the code
+# do i need to pass those params through closest_body ?????????????
 # 
 # 
 # 
 # 
 # 
-# 
-# 
+# TEST NONE CENTRAL BODY
 # 
 # 
 # 
