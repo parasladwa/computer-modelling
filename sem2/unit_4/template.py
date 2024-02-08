@@ -15,9 +15,8 @@ import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
 import sys
 import math
-import scipy.optimize
-
-#import basic functions
+import scipy
+#import scipy.optimize
 import basic_functions as b_f
 
 
@@ -88,7 +87,7 @@ def main():
         if len(sys.argv) == 6:
             extra_out = sys.argv(5)
     
-        print("SYS ARGVS OK")
+        print("\n   SYS ARGVS OK")
     else:
         print("Incorrect sys argv's\nCorrect form as follows :")
         print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
@@ -126,7 +125,7 @@ def main():
         time += dt
         
         #outfile headers
-        if i%1 == 0:
+        if i%2500 == 0:
             outfile.write(f"{n}\n")
             outfile.write(f"Point = {i}\n")
             
@@ -355,7 +354,7 @@ def main():
     def apsides():
 
         central_body = find_central_body(particles, positions)
-
+        particle_pairs = []
         #failcase
         if central_body == None:
             print(f"No central body was observed\
@@ -383,129 +382,162 @@ def main():
             print(f"\nBetween the Moon and Earth :")
             print(f"    Perigee = {perigee} /AU")
             print(f"    Apogee = {apogee} /AU")
-            
+            particle_pairs.append(["Moon", "Earth"])
         
         for p in particles:
             if (p == central_body) or (p.label == "Moon"):
                 continue
             perihelion, aphelion = calculate_apsides(central_body.label, p.label)
             print(f"\nBetween {central_body.label} and {p.label} :")
-            print(f"    the Perihelion = {perihelion} /AU")
-            print(f"    the Aphelion = {aphelion} /AU")
-            
-    apsides()
+            print(f"    Perihelion = {perihelion} /AU")
+            print(f"    Aphelion = {aphelion} /AU")
+            particle_pairs.append([central_body.label, p.label])
+        return particle_pairs
+    pairs = apsides()
         
             
     
     
     
-    
-    
-    
-    
-    
-    
-    def helions(big, small):
-        perihelion = np.inf #minimum
-        aphelion = 0 #maximum
+    def find_periods():
         
-        pos_big = np.transpose(get_positions(big))
-        pos_small = np.transpose(get_positions(small))
+        def orbit_dot_product(pair):
+            positions_1 = np.transpose(get_positions(pair[0]))
+            positions_2 = np.transpose(get_positions(pair[1]))
+            initial = positions_1[0] - positions_2[0]
+            x, y = [], []
+            for i in range(0, len(positions_1)):
+                relative = positions_1[i] - positions_2[i]
+                y.append(np.dot(initial, relative))
+            return x, y
+        
+        def period_from_peaks(peaks):
+            if len(peaks) < 2:
+                return None
+            differences = []
+            for i in range(0, len(peaks)-1):
+                differences.append(peaks[i+1] - peaks[i])
+            average = sum(differences)/len(differences)
+            return average*dt
+            
+        
+        for pair in pairs:
+            y = orbit_dot_product(pair)[1]
+            peaks_indicies = scipy.signal.find_peaks(y)
+            period = period_from_peaks(peaks_indicies[0])
+            if period == None:
+                print(f"\ninsufficient data to deduce orbital perid between {pair[0]} and {pair[1]}")
+                continue
+            print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days")
+            
+    find_periods()
+    
+    
+    
+    ########
+    
+    
+    # def helions(big, small):
+    #     perihelion = np.inf #minimum
+    #     aphelion = 0 #maximum
+        
+    #     pos_big = np.transpose(get_positions(big))
+    #     pos_small = np.transpose(get_positions(small))
         
         
-        for i in range(0, len(pos_big)):
-            distance = np.linalg.norm(pos_big[i] - pos_small[i])                       
+    #     for i in range(0, len(pos_big)):
+    #         distance = np.linalg.norm(pos_big[i] - pos_small[i])                       
             
-            if distance < perihelion:
-                perihelion = distance
+    #         if distance < perihelion:
+    #             perihelion = distance
             
-            if distance > aphelion:
-                aphelion = distance
-        return perihelion, aphelion
+    #         if distance > aphelion:
+    #             aphelion = distance
+    #     return perihelion, aphelion
     
-    # p, a = helions("Sun", "Earth")
-    # print(f"{p} -- {a} -- SUN EARTH")
+    # # p, a = helions("Sun", "Earth")
+    # # print(f"{p} -- {a} -- SUN EARTH")
     
     
-    def helion_lists():
+    # def helion_lists():
         
-        print("n.b. data may be inaccurate due to incomplete orbits")
-        def printer(p_1, p_2):
+    #     print("n.b. data may be inaccurate due to incomplete orbits")
+    #     def printer(p_1, p_2):
             
-            min_label, max_label = "Perihelion", "Aphelion"
+    #         min_label, max_label = "Perihelion", "Aphelion"
             
-            if "Moon" in [p_1, p_2] and "Earth" in [p_1, p_2]:
-                min_label, max_label = "Perigee", "Apogee"
-            #min, max
-            perihelion, aphelion = helions(p_1, p_2)
+    #         if "Moon" in [p_1, p_2] and "Earth" in [p_1, p_2]:
+    #             min_label, max_label = "Perigee", "Apogee"
+    #         #min, max
+    #         perihelion, aphelion = helions(p_1, p_2)
             
-            print(f"\n\nBetween {p_1} and {p_2} :")
-            print(f"    {min_label}   = {perihelion} / AU")
-            print(f"    {max_label}   = {aphelion} / AU")
+    #         print(f"\n\nBetween {p_1} and {p_2} :")
+    #         print(f"    {min_label}   = {perihelion} / AU")
+    #         print(f"    {max_label}   = {aphelion} / AU")
    
         
-        for p in particles:
-            if p.label != "Sun":
-                printer("Sun", p.label)
+    #     for p in particles:
+    #         if p.label != "Sun":
+    #             printer("Sun", p.label)
                 
         
-        printer("Earth", "Moon")
+    #     printer("Earth", "Moon")
         
     #helion_lists()
             
         
     
     
-    def curvefit():
-        # fail
-        def orbit_dot_product(p_1, p_2):
+    # def curvefit():
+    #     # fail
+    #     def orbit_dot_product(p_1, p_2):
             
-            positions_1 = np.transpose(get_positions(p_1))
-            positions_2 = np.transpose(get_positions(p_2))
+    #         positions_1 = np.transpose(get_positions(p_1))
+    #         positions_2 = np.transpose(get_positions(p_2))
             
-            initial = positions_1[0] - positions_2[0]
+    #         initial = positions_1[0] - positions_2[0]
             
-            x, y = [], []
+    #         x, y = [], []
             
-            for i in range(0, len(positions_1)):
+    #         for i in range(0, len(positions_1)):
                 
-                relative = positions_1[i] - positions_2[i]
+    #             relative = positions_1[i] - positions_2[i]
                 
-                x.append(i/100)
-                #y.append(math.atan(relative[1] / relative[0]))
+    #             x.append(i/100)
+    #             #y.append(math.atan(relative[1] / relative[0]))
                 
-                y.append(np.dot(initial, relative))
+    #             y.append(np.dot(initial, relative))
 
-            return x, y
-        #CHECK FOR MOON / EARTH
+    #         return x, y
+    #     #CHECK FOR MOON / EARTH
         
-        """CURVEFIT OPTIMIZATION"""
-        def sinusiod(x_, amplitude, omega, phi, const):
-            return amplitude * np.cos(omega * x_ + phi) + const
+    #     """CURVEFIT OPTIMIZATION"""
+    #     def sinusiod(x_, amplitude, omega, phi, const):
+    #         return amplitude * np.cos(omega * x_ + phi) + const
         
-        def curve_optimization(x, y):
-                                                                #[2, 500, 0, 0]
-            parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
-            omega = (parameters[0][1])
-            T = 2*math.pi /omega
-            print(f"\nT = {T}")
+    #     def curve_optimization(x, y):
+    #                                                             #[2, 500, 0, 0]
+    #         parameters = scipy.optimize.curve_fit(sinusiod, x, y, [2, 0.02, 0, 0])
+    #         omega = (parameters[0][1])
+    #         T = 2*math.pi /omega
+    #         print(f"\nT = {T}")
         
-            global ynew
-            ynew = []
-            for i in x:
-                ynew.append(sinusiod(i, parameters[0][0], parameters[0][1],\
-                                        parameters[0][2], parameters[0][3]))        
+    #         global ynew
+    #         ynew = []
+    #         for i in x:
+    #             ynew.append(sinusiod(i, parameters[0][0], parameters[0][1],\
+    #                                     parameters[0][2], parameters[0][3]))        
         
-        x, y = orbit_dot_product("Earth", "Sun")
-        curve_optimization(x, y)
+    #     x, y = orbit_dot_product("Earth", "Sun")
+    #     curve_optimization(x, y)
         
 
-        pyplot.title('dotproduct')
-        pyplot.xlabel('time / days')
-        pyplot.ylabel('dot product')
-        pyplot.plot(x, y, color='blue')
-        pyplot.plot(x, ynew, color = 'red') 
-        pyplot.show()
+    #     pyplot.title('dotproduct')
+    #     pyplot.xlabel('time / days')
+    #     pyplot.ylabel('dot product')
+    #     pyplot.plot(x, y, color='blue')
+    #     pyplot.plot(x, ynew, color = 'red') 
+    #     pyplot.show()
         
 
     
