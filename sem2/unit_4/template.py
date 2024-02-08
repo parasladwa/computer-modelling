@@ -564,10 +564,10 @@ if __name__ == "__main__":
 # TEST NONE CENTRAL BODY
 # 
 # 
+# comment the code
 # 
 # 
-# 
-# 
+# why some periods are bad accuracy
 # 
 # 
 # 
