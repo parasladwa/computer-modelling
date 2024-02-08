@@ -259,7 +259,8 @@ def main():
         Parameters
         ----------
         energies : np array
-            DESCRIPTION.
+            energy of the system throughout
+            the simulation.
 
         Returns
         -------
@@ -283,7 +284,26 @@ def main():
     
             
     def find_central_body(particles, positions):
-        
+        """ 
+        finds the object closest to the center of the orbits.
+        doing this by finding the closest object at a number
+        of timesteps and confirming the object is consistent.
+
+        Args:
+            particles (list)): list of particle3d instances 
+                                (planets, stars etc...)
+                                
+            positions (np array): full list of particles and 
+                                their positions throughout the
+                                simulation
+                                
+        Returns:
+            closest[0] (particle3D): object closest to 
+                                center of orbits
+            
+            None (NoneType): if no object is determined to be at the 
+                                center of the orbits.
+        """
         def closest_body(particles, positions, numstep = 1000):
             positions_at_numstep = []
             
@@ -312,8 +332,6 @@ def main():
             #print(f"the closest particle at {numstep/100} days = {closest[0].label}")
             
             return closest[0]
-
-        closest_body(particles, positions)
     
         #times to check
         #checking further times as the system
@@ -322,18 +340,24 @@ def main():
         closest = []
         for i in times_to_check:
             closest.append(closest_body(particles, positions, i))
-                
-        print(closest)
-        print(closest[0])
-    find_central_body(particles, positions)
-            
+        
+        
+        if len(set(closest)) == 1:
+            return closest[0]
+        
+        else:
+            return None
+        #come up with messages and what to do with other cases
+        
+    central_body = find_central_body(particles, positions)
+
     
     
     
     
-    
-    
-    
+    def apsides():
+        print(particles)
+    apsides()
     
     
     
@@ -459,4 +483,28 @@ def main():
 # not when you just import it from another python file.
 if __name__ == "__main__":
     main()
+
+
+# energy units
+# label the code
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+
+
 
