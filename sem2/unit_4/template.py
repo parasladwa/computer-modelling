@@ -126,7 +126,7 @@ def main():
         time += dt
         
         #outfile headers
-        if i%250 == 0:
+        if i%1 == 0:
             outfile.write(f"{n}\n")
             outfile.write(f"Point = {i}\n")
             
@@ -281,6 +281,67 @@ def main():
     
     
     
+            
+    def find_central_body(particles, positions):
+        
+        
+        def find_com(particles, positions, numstep = 35000):
+            positions_at_numstep = []
+            
+            #list of particles at numstep
+            for p in particles:
+                current = np.transpose(get_positions(p.label))
+                positions_at_numstep.append(current[numstep])
+            
+            
+            #find center of mass
+            mass_position = 0
+            net_mass = 0
+            for i, pos in enumerate(positions_at_numstep):
+                #ith particle corresponds to positions[i]
+                mass_position += particles[i].mass*pos
+                net_mass = particles[i].mass
+            com = mass_position/net_mass
+            print(f"center of mass at {numstep} days = {com}")
+                
+            #find closest particle to com
+            closest = [None, np.inf]
+            for i, pos in enumerate(positions_at_numstep):
+                distance = np.linalg.norm(pos - com)
+                if distance < closest[1]:
+                    closest = [particles[i], distance]
+            print(f"the closest particle at {numstep} days = {closest[0].label}")
+                
+                
+                
+                
+                
+            
+            
+        find_com(particles, positions)
+        
+        
+    find_central_body(particles, positions)
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def helions(big, small):
         perihelion = np.inf #minimum
         aphelion = 0 #maximum
@@ -301,10 +362,6 @@ def main():
     
     # p, a = helions("Sun", "Earth")
     # print(f"{p} -- {a} -- SUN EARTH")
-    
-    
-    
-    
     
     
     def helion_lists():
@@ -331,14 +388,14 @@ def main():
         
         printer("Earth", "Moon")
         
-    helion_lists()
+    #helion_lists()
             
         
     
     
     def curvefit():
         
-        
+        # fail
         def orbit_dot_product(p_1, p_2):
             
             positions_1 = np.transpose(get_positions(p_1))
@@ -392,7 +449,7 @@ def main():
         pyplot.plot(x, ynew, color = 'red') 
         pyplot.show()
         
-    curvefit()  
+
     
 
     
