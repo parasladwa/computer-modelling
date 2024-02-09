@@ -75,6 +75,8 @@ def main():
     # numstep dt inputfile outputxyz 
     # %run template.py 36500 0.01 mini_system.txt outfile.xyz
     
+    
+    #takes arguments from command line
     if len(sys.argv) in [5, 6]:
         
         numstep = int(sys.argv[1])
@@ -88,6 +90,7 @@ def main():
     
         print("SYS ARGVS OK")
     else:
+        #error message if insufficient command line args
         print("Incorrect sys argv's\nCorrect form as follows :")
         print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
         sys.exit(1)
@@ -124,6 +127,9 @@ def main():
         time += dt
         
         #outfile headers
+        #only writes every 250th datapoint as
+        #otherwise the animation gif takes too
+        #long to be plotted
         if i%250 == 0:
             outfile.write(f"{n}\n")
             outfile.write(f"Point = {i}\n")
@@ -158,11 +164,6 @@ def main():
         #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles)
 
-
-    
-    '''
-    SORT OUT PLOTS
-    '''
     
     
     
@@ -171,7 +172,6 @@ def main():
     for i, particle in enumerate(particles):
         particle_dict[particle.label] = i
         particle_dict[i] = particle.label
-    print(particle_dict)
     
     
     
