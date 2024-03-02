@@ -465,6 +465,8 @@ def main():
             if len(peaks) < 2:
                 return None
             
+            #finds average distance between peaks
+            #then returns value converted to days
             differences = []
             for i in range(0, len(peaks)-1):
                 differences.append(peaks[i+1] - peaks[i])
@@ -472,6 +474,8 @@ def main():
             return average*dt
             
         
+        #iterates through particle pairs and 
+        #prints orbits where applicable to terminal
         for pair in pairs:
             y = orbit_dot_product(pair)[1]
             peaks_indicies = scipy.signal.find_peaks(y)
@@ -634,7 +638,7 @@ if __name__ == "__main__":
 
 
 
-################################### UNIT 2 FEEDBACK ########################################
+################################### UNIT 2 FEEDBACK #######################################
 # 1.Correct Verlet algorithm.
 
 # Verlet is in general form and error is subtle [2]
