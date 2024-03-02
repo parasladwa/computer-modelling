@@ -459,9 +459,9 @@ def main():
                                         in x is stored
 
             Returns:
-                _type_: _description_
+                (float) : averaged
             """
-            #insufficient data to find orbital period
+            #failcase
             if len(peaks) < 2:
                 return None
             
