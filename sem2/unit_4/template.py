@@ -47,7 +47,6 @@ def particles_from_file(filename = "mini_system.txt"):
         list of instances of particles, Particle3D
 
     '''
-    
     particles = []
     
     file = open(filename, 'r')
@@ -83,18 +82,15 @@ def main():
         particle_file = sys.argv[3]
         outfile_name = sys.argv[4]
         
-        
         if len(sys.argv) == 6:
             extra_out = sys.argv(5)
     
         print("\n   SYS ARGVS OK")
+        
     else:
         print("Incorrect sys argv's\nCorrect form as follows :")
         print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
         sys.exit(1)
-        
-
-
 
     
     #open outfile
@@ -133,25 +129,20 @@ def main():
             for particle in particles:
                 outfile.write(f"{particle.label} {str(particle.position)[1:-1]}\n")
         
-        
         #update all particle positions
         #store particle positions in array
         for j, particle in enumerate(particles):
             particle.update_position_2nd(dt, forces[j])
             positions[j][i] = particle.position #maybe error here
             
-         
         #get new separations and new forces on all particles, and the potential
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
-        
-        
+                
         #update all particle velocities
         for k, particle in enumerate(particles):
             particle.update_velocity(dt, forces[k])
             
-        
-        
         #replace forces with new forces for next iteration
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
@@ -164,18 +155,17 @@ def main():
     '''
     SORT OUT PLOTS
     '''
-    
-    
-    
+        
     #dictionary of particle locations
+    #maybe move this into get_positions function to 
+    #keep local, unless used elsewhere later
     particle_dict = {}
     for i, particle in enumerate(particles):
         particle_dict[particle.label] = i
         particle_dict[i] = particle.label
     
     
-    
-    
+
     
     def get_positions(particle_label):
         '''
@@ -263,8 +253,8 @@ def main():
 
         Returns
         -------
-        deviation : TYPE
-            DESCRIPTION.
+        deviation : float
+            energy deviation
 
         '''
         initial = energies[0]
@@ -278,7 +268,7 @@ def main():
     print(f"Energy deviation = {energy_deviation(energy)}")
     
     
-    
+
     
     
             
@@ -294,7 +284,7 @@ def main():
                                 
             positions (np array): full list of particles and 
                                 their positions throughout the
-                                simulation
+                                simulation -------------------------------- dont need this?
                                 
         Returns:
             closest[0] (particle3D): object closest to 
@@ -310,7 +300,6 @@ def main():
             for p in particles:
                 current = np.transpose(get_positions(p.label))
                 positions_at_numstep.append(current[numstep])
-            
             
             #find center of mass
             mass_position = 0
@@ -352,31 +341,58 @@ def main():
 
     
     def apsides():
+        """takes all particles and finds min and max 
+            distances of orbits from central body.
+            also returns pairs of particles which orbit eachother
+
+        Returns:
+            particle_pairs (2d list) : list of pairs
+                            of particles which orbit
+                            eachother
+        """
 
         central_body = find_central_body(particles, positions)
-        particle_pairs = []
         #failcase
         if central_body == None:
             print(f"No central body was observed\
                     thus no apsides will be computed")
             return 0
+        
+        particle_pairs = []        
         print(f"\nCentral body identified as {central_body.label}")
         particle_labels = [p.label for p in particles]
         
         def calculate_apsides(p1, p2):
+            """ given 2 particles calculates perhelion
+                and aphelion manually iterating through
+                each timestep
+            Args:
+                p1 (Particle3D): particle3d instance
+                p2 (Particle3D): particle3d instance
+
+            Returns:
+                perihelion (float) : minimum distance to central body
+                aphelion (float) :   maximum distance to central body
+            """
+            
             perihelion = np.inf
             aphelion = 0
             posn_1 = np.transpose(get_positions(p1))
             posn_2 = np.transpose(get_positions(p2))
+            
             for i in range(0, len(posn_1)):
+                
+                #calculate distance between pair for each timestep
                 distance = np.linalg.norm(posn_1[i] - posn_2[i])
                 if distance < perihelion:
                     perihelion = distance
                 if distance > aphelion:
                     aphelion = distance
+                    
             return perihelion, aphelion
         
         
+        #perigee / apogee case
         if  ("Moon" and "Earth") in particle_labels:
             perigee, apogee = calculate_apsides("Moon", "Earth")
             print(f"\nBetween the Moon and Earth :")
@@ -574,5 +590,22 @@ if __name__ == "__main__":
 # 
 # 
 
+
+
+
+
+
+
+
+
+
+################################### UNIT 2 FEEDBACK ########################################
+# 1.Correct Verlet algorithm.
+
+# Verlet is in general form and error is subtle [2]
+
+# You haven’t computed a total energy just KE – the magnitude of which does not look right. 
+
+# 2. Correct centre-of-mass subtraction. [1]
 
 
