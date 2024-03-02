@@ -400,6 +400,9 @@ def main():
             print(f"    Apogee = {apogee} /AU")
             particle_pairs.append(["Moon", "Earth"])
         
+        #iterares through above particle pairs
+        # calculation orbit maxima and minima
+        # using above function and printing to terminal
         for p in particles:
             if (p == central_body) or (p.label == "Moon"):
                 continue
@@ -408,7 +411,9 @@ def main():
             print(f"    Perihelion = {perihelion} /AU")
             print(f"    Aphelion = {aphelion} /AU")
             particle_pairs.append([central_body.label, p.label])
+            
         return particle_pairs
+    
     pairs = apsides()
         
             
@@ -418,18 +423,48 @@ def main():
     def find_periods():
         
         def orbit_dot_product(pair):
+            """
+            given a pair of particles calculates dot product
+            between initial relative vector and current relative
+            vectors at each time. (relative position vectors)
+            Args:
+                pair (list): 2 instances of particle3d
+
+            Returns:
+                x (list) _----------------------------------------------------------------is this needed
+                y (1d list of floats) : dot products at each
+                                        time as described.
+            """
+            
             positions_1 = np.transpose(get_positions(pair[0]))
             positions_2 = np.transpose(get_positions(pair[1]))
             initial = positions_1[0] - positions_2[0]
             x, y = [], []
+            
+            #iterate through positions and log
+            #relative dot product
             for i in range(0, len(positions_1)):
                 relative = positions_1[i] - positions_2[i]
                 y.append(np.dot(initial, relative))
+                
             return x, y
         
+        
         def period_from_peaks(peaks):
+            """given indicies of where peaks in y from above 
+                function, calculates period /days
+
+            Args:
+                peaks (list of ints): indicies of where maxima
+                                        in x is stored
+
+            Returns:
+                _type_: _description_
+            """
+            #insufficient data to find orbital period
             if len(peaks) < 2:
                 return None
+            
             differences = []
             for i in range(0, len(peaks)-1):
                 differences.append(peaks[i+1] - peaks[i])
