@@ -85,7 +85,7 @@ def main():
         if len(sys.argv) == 6:
             extra_out = sys.argv(5)
     
-        print("\n   SYS ARGVS OK")
+        print("\n   SYS ARGVS OK\n")
         
     else:
         print("Incorrect sys argv's\nCorrect form as follows :")
@@ -363,7 +363,7 @@ def main():
             return 0
         
         particle_pairs = []        
-        print(f"\nCentral body identified as {central_body.label}")
+        print(f"\nCentral body identified as {central_body.label}\n")
         particle_labels = [p.label for p in particles]
         
         def calculate_apsides(p1, p2):
@@ -435,7 +435,6 @@ def main():
                 pair (list): 2 instances of particle3d
 
             Returns:
-                x (list) _----------------------------------------------------------------is this needed
                 y (1d list of floats) : dot products at each
                                         time as described.
             """
@@ -443,7 +442,7 @@ def main():
             positions_1 = np.transpose(get_positions(pair[0]))
             positions_2 = np.transpose(get_positions(pair[1]))
             initial = positions_1[0] - positions_2[0]
-            x, y = [], []
+            y = []
             
             #iterate through positions and log
             #relative dot product
@@ -451,7 +450,7 @@ def main():
                 relative = positions_1[i] - positions_2[i]
                 y.append(np.dot(initial, relative))
                 
-            return x, y
+            return y
         
         
         def period_from_peaks(peaks):
@@ -481,7 +480,7 @@ def main():
         #iterates through particle pairs and 
         #prints orbits where applicable to terminal
         for pair in pairs:
-            y = orbit_dot_product(pair)[1]
+            y = orbit_dot_product(pair)
             peaks_indicies = scipy.signal.find_peaks(y)
             period = period_from_peaks(peaks_indicies[0])
             if period == None:
@@ -632,17 +631,6 @@ if __name__ == "__main__":
 # 
 # 
 # 
-
-
-
-
-
-
-
-
-
-
-################################### UNIT 2 FEEDBACK #######################################
 
 # 2. Correct centre-of-mass subtraction. [1]
 
