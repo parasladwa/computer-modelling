@@ -134,14 +134,18 @@ def main():
         for j, particle in enumerate(particles):
             particle.update_position_2nd(dt, forces[j])
             positions[j][i] = particle.position #maybe error here
+        
+        previous_force = forces
             
         #get new separations and new forces on all particles, and the potential
         separations = b_f.compute_separations(particles)
         forces, potential = b_f.compute_forces_potential(particles, separations)
-                
+        
+        
         #update all particle velocities
+        average_force = (previous_force + forces)/2
         for k, particle in enumerate(particles):
-            particle.update_velocity(dt, forces[k])
+            particle.update_velocity(dt, average_force[k])
             
         #replace forces with new forces for next iteration
         separations = b_f.compute_separations(particles)
@@ -639,10 +643,6 @@ if __name__ == "__main__":
 
 
 ################################### UNIT 2 FEEDBACK #######################################
-# 1.Correct Verlet algorithm.
-
-# Verlet is in general form and error is subtle [2]
-
 # You haven’t computed a total energy just KE – the magnitude of which does not look right. 
 
 # 2. Correct centre-of-mass subtraction. [1]
