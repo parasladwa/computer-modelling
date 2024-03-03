@@ -152,7 +152,7 @@ def main():
         forces, potential = b_f.compute_forces_potential(particles, separations)
     
         #compute the kinetic energy and save the total energy
-        energy[i] = Particle3D.total_kinetic_energy(particles)
+        energy[i] = Particle3D.total_kinetic_energy(particles) + potential
 
 
     
