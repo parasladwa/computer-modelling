@@ -101,7 +101,7 @@ def main():
     time = 0.0
 
     #subtract the centre-of-mass velocity
-    com_vel = Particle3D.com_velocity(particles)
+    com_vel = Particle3D.com_velocity(particles) ########################################################## ????
     for particle in particles:
         particle.velocity -= com_vel
 
@@ -643,7 +643,6 @@ if __name__ == "__main__":
 
 
 ################################### UNIT 2 FEEDBACK #######################################
-# You haven’t computed a total energy just KE – the magnitude of which does not look right. 
 
 # 2. Correct centre-of-mass subtraction. [1]
 
