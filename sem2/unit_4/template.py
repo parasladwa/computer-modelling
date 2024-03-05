@@ -101,7 +101,11 @@ def main():
     time = 0.0
 
     #subtract the centre-of-mass velocity
-    com_vel = Particle3D.com_velocity(particles) ########################################################## ????
+    net_mass = 0
+    for particle in particles:
+        net_mass += particle.mass
+        
+    com_vel = Particle3D.com_velocity(particles)/net_mass ########################################################## ????
     for particle in particles:
         particle.velocity -= com_vel
 
@@ -363,7 +367,7 @@ def main():
             return 0
         
         particle_pairs = []        
-        print(f"\nCentral body identified as {central_body.label}\n")
+        print(f"\nCentral body identified as : {central_body.label}\n")
         particle_labels = [p.label for p in particles]
         
         def calculate_apsides(p1, p2):
