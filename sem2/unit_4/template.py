@@ -161,7 +161,7 @@ def main():
 
     
     '''
-    SORT OUT PLOTS
+    SORT OUT PLOTS=================================================================================
     '''
         
     #dictionary of particle locations
