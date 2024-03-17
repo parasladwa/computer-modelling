@@ -62,7 +62,7 @@ def particles_from_file(filename = "mini_system.txt"):
 
     
     
-def main():
+def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_name = 'outfile.xyz', extra_out = None):
     '''
     implementing verlet velocity integration scheme
     to reduced solar system, running simulation of a year,
@@ -75,22 +75,26 @@ def main():
     # numstep dt inputfile outputxyz 
     # %run template.py 36500 0.01 mini_system.txt outfile.xyz
     
-    if len(sys.argv) in [5, 6]:
+    # if len(sys.argv) in [5, 6]:
         
-        numstep = int(sys.argv[1])
-        dt = float(sys.argv[2])
-        particle_file = sys.argv[3]
-        outfile_name = sys.argv[4]
+    #     numstep = int(sys.argv[1])
+    #     dt = float(sys.argv[2])
+    #     particle_file = sys.argv[3]
+    #     outfile_name = sys.argv[4]
         
-        if len(sys.argv) == 6:
-            extra_out = sys.argv(5)
+    #     if len(sys.argv) == 6:
+    #         extra_out = sys.argv(5)
     
-        print("\n   SYS ARGVS OK\n")
+    #     print("\n   SYS ARGVS OK\n")
         
-    else:
-        print("Incorrect sys argv's\nCorrect form as follows :")
-        print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
-        sys.exit(1)
+    # else:
+    #     print("Incorrect sys argv's\nCorrect form as follows :")
+    #     print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
+    #     sys.exit(1)
+    
+    
+    
+    print("\n ===== SYS ARGS OK =====")
 
     
     #open outfile
@@ -273,7 +277,8 @@ def main():
         
         return deviation
     
-    print(f"Energy deviation = {energy_deviation(energy)}")
+    energy_dev = energy_deviation(energy)
+    print(f"Energy deviation = {energy_dev}")
     
     
 
@@ -347,7 +352,7 @@ def main():
 
 
 
-    
+    data_list = []
     def apsides():
         """takes all particles and finds min and max 
             distances of orbits from central body.
@@ -358,6 +363,8 @@ def main():
                             of particles which orbit
                             eachother
         """
+        
+
 
         central_body = find_central_body(particles, positions)
         #failcase
@@ -406,6 +413,7 @@ def main():
             print(f"\nBetween the Moon and Earth :")
             print(f"    Perigee = {perigee} /AU")
             print(f"    Apogee = {apogee} /AU")
+            data_list.append(["Moon", "Earth", perigee, apogee])
             particle_pairs.append(["Moon", "Earth"])
         
         #iterares through above particle pairs
@@ -418,6 +426,7 @@ def main():
             print(f"\nBetween {central_body.label} and {p.label} :")
             print(f"    Perihelion = {perihelion} /AU")
             print(f"    Aphelion = {aphelion} /AU")
+            data_list.append([central_body.label, p.label, perihelion, aphelion])
             particle_pairs.append([central_body.label, p.label])
             
         return particle_pairs
@@ -483,7 +492,7 @@ def main():
         
         #iterates through particle pairs and 
         #prints orbits where applicable to terminal
-        for pair in pairs:
+        for index, pair in enumerate(pairs):
             y = orbit_dot_product(pair)
             peaks_indicies = scipy.signal.find_peaks(y)
             period = period_from_peaks(peaks_indicies[0])
@@ -491,8 +500,24 @@ def main():
                 print(f"\ninsufficient data to deduce orbital perid between {pair[0]} and {pair[1]}")
                 continue
             print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days")
+            data_list[index].append(period)
             
     find_periods()
+    
+    
+
+    
+    
+    
+    return particles, data_list, energy_dev
+    
+
+""" __________________ UNIT 5 CHANGES ______________________
+-introduce energy_dev variable
+-data_list
+-change params
+"""
+    
     
     
     
