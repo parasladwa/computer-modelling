@@ -1,9 +1,5 @@
 import template
-
-
-
-
-
+import matplotlib.pyplot as plt
 
 
 literature_dict = {
@@ -19,24 +15,52 @@ literature_dict = {
 }
 
 
-
-print('------------------------------------------------------------------------------------------')
-
-
-
 def percentage_difference(measured, true):
     percent = 100*(true - measured)/true
     return abs(percent)
 
 
+def numstep_finder(dt, years=1):
+    days = years*366
+    return round(days/dt)
 
-def main(dts = [0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
+# def main(dts = [0.01, 0.2], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
+#     plot_this = [[dts], []]
+#     for dt in dts:
+#         data = template.main(numstep, dt, particle_file, outfile)[1]
+#         for pair in data:
+#             if pair[0] == "Sun":
+#                 true = literature_dict[pair[1]]['period']
+#                 measured = pair[4]
+#                 delta = percentage_difference(true, measured)
+#                 plot_this[1].append([pair[1], delta])
+#                 print(pair[0], pair[1], delta)
+#     return plot_this
+
+
+
+
+def main(dts = [0.01, 0.05], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
+    plot_this = [dts, []]
     for dt in dts:
+        numstep = numstep_finder(dt, 2)
         data = template.main(numstep, dt, particle_file, outfile)[1]
+        
         for pair in data:
-            if pair[0] == "Sun":
+            if pair[0] == "Sun" and pair[1] == "Earth":
                 true = literature_dict[pair[1]]['period']
-                measured = pair[4]
+                #measured = pair[4]
+                measured = literature_dict["Earth"]["period"]
                 delta = percentage_difference(true, measured)
+                plot_this[1].append(delta)
                 print(pair[0], pair[1], delta)
-main()
+    return plot_this
+a = main()
+
+print(a)
+
+
+
+
+plt.plot(a[0], a[1])
+plt.show()
