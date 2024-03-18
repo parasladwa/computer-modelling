@@ -5,7 +5,6 @@ import template
 
 
 
-particles, data, energy_deviation = template.main(37000, 0.01, 'mini_system.txt', 'outfile.xyz')
 
 literature_dict = {
     "Mercury": {"period": 88.0, "perihelion" : 0.30749100752, "aphelion" : 0.466584180976},
@@ -29,11 +28,15 @@ def percentage_difference(measured, true):
     percent = 100*(true - measured)/true
     return abs(percent)
 
+
+
 def main(dts = [0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
-    
-    
     for dt in dts:
-        data = template.main(numstep, dt, particle_file, outfile)
-        
+        data = template.main(numstep, dt, particle_file, outfile)[1]
         for pair in data:
-            
+            if pair[0] == "Sun":
+                true = literature_dict[pair[1]]['period']
+                measured = pair[4]
+                delta = percentage_difference(true, measured)
+                print(pair[0], pair[1], delta)
+main()
