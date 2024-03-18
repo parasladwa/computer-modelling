@@ -1,10 +1,16 @@
 
 
-d = {
-  "brand": "Ford",
-  "model": "Mustang",
-  "year": 1964
+
+
+unc = {
+    "Earth" :  {"period" :[], "perihelion":[], "aphelion":[]},
+    "Moon"  :  {"period" :[], "perihelion":[], "aphelion":[]},
+    "Mercury": {"period" :[], "perihelion":[], "aphelion":[]}
 }
 
-for i in d:
-    print(i)
+
+unc["Earth"]['period'].append(1)
+print(unc)
+
+unc["Earth"]['period'].append(2)
+print(f"\n\n{unc}")

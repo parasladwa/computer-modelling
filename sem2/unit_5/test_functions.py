@@ -23,10 +23,8 @@ def percentage_difference(measured, true):
 
 
 def numstep_finder(dt, years=1):
-    days = years*366
+    days = years*370
     return round(days/dt)
-
-
 
 
 def extract_data(data, particles, central_body):
@@ -45,7 +43,7 @@ def extract_data(data, particles, central_body):
 def main_earth(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
     plot_this = [dts, []]
     for dt in dts:
-        numstep = numstep_finder(dt, 2)
+        numstep = numstep_finder(dt, 1)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         organised_data = extract_data(data, particles, central_body)
         for pair in data:
@@ -62,34 +60,47 @@ def main_earth(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =3700
 
 
 #refine it -- general
-def main_gen(dts = [0.05], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
-        
+def main_gen(dts = [0.2, 0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+    
+    uncertainties = {
+        "Earth" :  {"period" :[], "perihelion":[], "aphelion":[]},
+        "Moon"  :  {"period" :[], "perihelion":[], "aphelion":[]},
+        "Mercury": {"period" :[], "perihelion":[], "aphelion":[]}
+    }
+    
     for dt in dts:
         
-        numstep = numstep_finder(dt, 2)
+        numstep = numstep_finder(dt, 1)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
         #print(data_dictionary)
         for element in data_dictionary:
-                        
+            
             #period
             true = literature_dict[element]['period']
             measured = data_dictionary[element][2]
             delta = percentage_difference(measured, true)
-            print(f"period uncertainty - {central_body}, {element}   = {delta}%\n")
+            print(f"period uncertainty - {central_body.label}, {element}   = {delta}%\n")
+            uncertainties[element]['period'].append(delta)
             
             #perihelion
             true = literature_dict[element]['perihelion']
             measured = data_dictionary[element][0]
             delta = percentage_difference(measured, true)
-            print(f"perihelion uncertainty - {central_body}, {element}   = {delta}%\n")
-            
+            print(f"perihelion uncertainty - {central_body.label}, {element}   = {delta}%\n")
+            uncertainties[element]['perihelion'].append(delta)
+
             #aphelion
             true = literature_dict[element]['aphelion']
             measured = data_dictionary[element][1]
             delta = percentage_difference(measured, true)
-            print(f"aphelion uncertainty - {central_body}, {element}   = {delta}%\n\n\n")
+            print(f"aphelion uncertainty - {central_body.label}, {element}   = {delta}%\n\n\n")
+            uncertainties[element]['aphelion'].append(delta)
             
+        
+    print(uncertainties)    
+        
+
             
             
 main_gen()
