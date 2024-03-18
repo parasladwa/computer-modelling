@@ -365,12 +365,12 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
         """
         
 
-
+        global central_body
         central_body = find_central_body(particles, positions)
         #failcase
         if central_body == None:
-            print(f"No central body was observed\
-                    thus no apsides will be computed")
+            #print(f"No central body was observed\
+            #        thus no apsides will be computed")
             return 0
         
         particle_pairs = []        
@@ -410,9 +410,9 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
         #perigee / apogee case
         if  ("Moon" and "Earth") in particle_labels:
             perigee, apogee = calculate_apsides("Moon", "Earth")
-            print(f"\nBetween the Moon and Earth :")
-            print(f"    Perigee = {perigee} /AU")
-            print(f"    Apogee = {apogee} /AU")
+            # print(f"\nBetween the Moon and Earth :")
+            # print(f"    Perigee = {perigee} /AU")
+            # print(f"    Apogee = {apogee} /AU")
             data_list.append(["Moon", "Earth", perigee, apogee])
             particle_pairs.append(["Moon", "Earth"])
         
@@ -423,9 +423,9 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
             if (p == central_body) or (p.label == "Moon"):
                 continue
             perihelion, aphelion = calculate_apsides(central_body.label, p.label)
-            print(f"\nBetween {central_body.label} and {p.label} :")
-            print(f"    Perihelion = {perihelion} /AU")
-            print(f"    Aphelion = {aphelion} /AU")
+            # print(f"\nBetween {central_body.label} and {p.label} :")
+            # print(f"    Perihelion = {perihelion} /AU")
+            # print(f"    Aphelion = {aphelion} /AU")
             data_list.append([central_body.label, p.label, perihelion, aphelion])
             particle_pairs.append([central_body.label, p.label])
             
@@ -509,7 +509,7 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     
     
     
-    return particles, data_list, energy_dev
+    return particles, data_list, energy_dev, central_body
     
 
 """ __________________ UNIT 5 CHANGES ______________________

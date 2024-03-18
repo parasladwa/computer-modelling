@@ -17,7 +17,7 @@ literature_dict = {
 
 def percentage_difference(measured, true):
     percent = 100*(true - measured)/true
-    return abs(percent)
+    return percent
 
 
 def numstep_finder(dt, years=1):
@@ -38,26 +38,34 @@ def numstep_finder(dt, years=1):
 #     return plot_this
 
 
+def extract_data(data, particles, central_body):
+    organised = {}
+    for particle in particles:
+        if (particle.label == central_body.label) or (particle.label in organised):
+            continue
+        for set in data:
+            if particle.label not in set:
+                continue
+            organised[particle.label] = set[-3:]
+    return organised
+    
+    
 
-
-def main(dts = [0.01, 0.05], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
+def main(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
     plot_this = [dts, []]
     for dt in dts:
         numstep = numstep_finder(dt, 2)
-        data = template.main(numstep, dt, particle_file, outfile)[1]
-        
+        particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
+        organised_data = extract_data(data, particles, central_body)
         for pair in data:
-            if pair[0] == "Sun" and pair[1] == "Earth":
+            if pair[0] == central_body.label and pair[1] == "Earth":
                 true = literature_dict[pair[1]]['period']
-                #measured = pair[4]
-                measured = literature_dict["Earth"]["period"]
+                measured = organised_data["Earth"][2]
                 delta = percentage_difference(true, measured)
                 plot_this[1].append(delta)
-                print(pair[0], pair[1], delta)
+    print(organised_data)
     return plot_this
 a = main()
-
-print(a)
 
 
 
