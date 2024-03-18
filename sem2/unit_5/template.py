@@ -499,7 +499,7 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
             if period == None:
                 print(f"\ninsufficient data to deduce orbital perid between {pair[0]} and {pair[1]}")
                 continue
-            print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days")
+            print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days\n\n")
             data_list[index].append(period)
             
     find_periods()
