@@ -59,8 +59,8 @@ def main_earth(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =3700
 # plt.show()
 
 
-#refine it -- general
-def main_gen(dts = [0.2, 0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+#refine it -- general     good dts - .2, .1, 0.05, 0.01
+def main_gen(dts = [1, 0.5, 0.1, 0.01], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
     
     uncertainties = {
         "Earth" :  {"period" :[], "perihelion":[], "aphelion":[]},
@@ -74,6 +74,7 @@ def main_gen(dts = [0.2, 0.1], particle_file = 'mini_system.txt', outfile= 'test
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
         #print(data_dictionary)
+        
         for element in data_dictionary:
             
             #period
@@ -99,8 +100,14 @@ def main_gen(dts = [0.2, 0.1], particle_file = 'mini_system.txt', outfile= 'test
             
         
     print(uncertainties)    
-        
 
+    for planet in uncertainties:
+        print('\n', planet)
+        for i in uncertainties[planet]:
+            print(uncertainties[planet][i]) 
             
+            plt.title(f"{planet} - {i}")
+            plt.plot(dts, uncertainties[planet][i])
+            plt.show()
             
 main_gen()
