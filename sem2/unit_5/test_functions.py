@@ -40,10 +40,11 @@ def extract_data(data, particles, central_body):
     
     
 #raw -- earth only
-def main_earth(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
+def main_earth(dts = [0.01], numstep =37000, particle_file = 'mini_system.txt', outfile = 'test_out.xyz'):
     plot_this = [dts, []]
     for dt in dts:
-        numstep = numstep_finder(dt, 1)
+        print(f"____________________{dt}____________________")
+        numstep = numstep_finder(dt, 5)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         organised_data = extract_data(data, particles, central_body)
         for pair in data:
@@ -60,17 +61,17 @@ def main_earth(dts = [1, 0.75, 0.5, 0.25, 0.1, 0.075, 0.05, 0.01], numstep =3700
 
 
 #refine it -- general     good dts - .2, .1, 0.05, 0.01
-def main_gen(dts = [1, 0.5, 0.1, 0.01], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
     
     uncertainties = {
-        "Earth" :  {"period" :[], "perihelion":[], "aphelion":[]},
-        "Moon"  :  {"period" :[], "perihelion":[], "aphelion":[]},
-        "Mercury": {"period" :[], "perihelion":[], "aphelion":[]}
+        "Earth"     : {"period" :[], "perihelion":[], "aphelion":[]},
+        "Moon"      : {"period" :[], "perihelion":[], "aphelion":[]},
+        "Mercury"   : {"period" :[], "perihelion":[], "aphelion":[]},
     }
     
     for dt in dts:
         
-        numstep = numstep_finder(dt, 1)
+        numstep = numstep_finder(dt)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
         #print(data_dictionary)
@@ -99,15 +100,19 @@ def main_gen(dts = [1, 0.5, 0.1, 0.01], particle_file = 'mini_system.txt', outfi
             uncertainties[element]['aphelion'].append(delta)
             
         
-    print(uncertainties)    
+    #print(uncertainties)    
 
     for planet in uncertainties:
         print('\n', planet)
         for i in uncertainties[planet]:
             print(uncertainties[planet][i]) 
             
+            '''
             plt.title(f"{planet} - {i}")
-            plt.plot(dts, uncertainties[planet][i])
+            plt.scatter(dts, uncertainties[planet][i])
             plt.show()
-            
+            '''
 main_gen()
+
+
+#self convergence
