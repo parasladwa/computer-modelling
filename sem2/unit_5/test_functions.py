@@ -112,7 +112,58 @@ def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', 
             plt.scatter(dts, uncertainties[planet][i])
             plt.show()
             '''
-main_gen()
+# main_gen()
 
 
-#self convergence
+
+
+
+def main_self(dts = [10, 8, 6, 4, 2, 1, 0.5, 0.1, 0.01], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+    
+    uncertainties = {
+        "Earth"     : {"period" :[], "perihelion":[], "aphelion":[]},
+        "Moon"      : {"period" :[], "perihelion":[], "aphelion":[]},
+        "Mercury"   : {"period" :[], "perihelion":[], "aphelion":[]},
+    }
+    
+    for dt in dts:
+        
+        numstep = numstep_finder(dt, 5)
+        particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
+        data_dictionary = extract_data(data, particles, central_body)
+        #print(data_dictionary)
+        
+        for element in data_dictionary:
+            
+            #period
+            measured = data_dictionary[element][2]
+            print(f"period uncertainty - {central_body.label}, {element}   = {measured}%\n")
+            uncertainties[element]['period'].append(measured)
+            
+            #perihelion
+            measured = data_dictionary[element][0]
+            print(f"perihelion uncertainty - {central_body.label}, {element}   = {measured}%\n")
+            uncertainties[element]['perihelion'].append(measured)
+
+            #aphelion
+            measured = data_dictionary[element][1]
+            print(f"aphelion uncertainty - {central_body.label}, {element}   = {measured}%\n\n\n")
+            uncertainties[element]['aphelion'].append(measured)
+            
+        
+    #print(uncertainties)    
+
+    for planet in uncertainties:
+        print('\n', planet)
+        
+        if planet == "Earth":
+            for i in uncertainties[planet]:
+                print(uncertainties[planet][i]) 
+                
+                
+                plt.title(f"{planet} - {i}")
+                plt.scatter(dts, uncertainties[planet][i])
+                plt.show()
+
+
+main_self()
