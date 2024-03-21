@@ -94,7 +94,7 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     
     
     
-    print("\n ===== SYS ARGS OK =====")
+    print("\n================== SYS ARGS OK ======================")
 
     
     #open outfile

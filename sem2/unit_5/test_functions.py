@@ -1,5 +1,6 @@
 import template
 import matplotlib.pyplot as plt
+import time
 
 #ICs taken from 23rd of May 2023
 
@@ -71,6 +72,9 @@ def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', 
     
     for dt in dts:
         
+        print(f"dt = {dt}")
+        start = time.time()
+        
         numstep = numstep_finder(dt)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
@@ -98,6 +102,8 @@ def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', 
             delta = percentage_difference(measured, true)
             print(f"aphelion uncertainty - {central_body.label}, {element}   = {delta}%\n\n\n")
             uncertainties[element]['aphelion'].append(delta)
+    end = time.timeit()
+    print(f"time elapsed = {end-start}")
             
         
     #print(uncertainties)    
@@ -118,7 +124,7 @@ def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', 
 
 
 
-def main_self(dts = [10, 8, 6, 4, 2, 1, 0.5, 0.1, 0.01], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+def main_self(dts = [0.1, 0.01, 0.001], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
     
     uncertainties = {
         "Earth"     : {"period" :[], "perihelion":[], "aphelion":[]},
@@ -127,6 +133,8 @@ def main_self(dts = [10, 8, 6, 4, 2, 1, 0.5, 0.1, 0.01], particle_file = 'mini_s
     }
     
     for dt in dts:
+        
+        start = time.time()
         
         numstep = numstep_finder(dt, 5)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
@@ -149,7 +157,9 @@ def main_self(dts = [10, 8, 6, 4, 2, 1, 0.5, 0.1, 0.01], particle_file = 'mini_s
             measured = data_dictionary[element][1]
             print(f"aphelion uncertainty - {central_body.label}, {element}   = {measured}%\n\n\n")
             uncertainties[element]['aphelion'].append(measured)
-            
+        end = time.time()
+        print(f"dt = {dt}")
+        print(f"time elapsed = {end-start}\n\n")  
         
     #print(uncertainties)    
 
@@ -164,6 +174,7 @@ def main_self(dts = [10, 8, 6, 4, 2, 1, 0.5, 0.1, 0.01], particle_file = 'mini_s
                 plt.title(f"{planet} - {i}")
                 plt.scatter(dts, uncertainties[planet][i])
                 plt.show()
+
 
 
 main_self()
