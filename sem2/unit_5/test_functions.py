@@ -124,7 +124,7 @@ def main_gen(dts = [1, 0.5, 0.49, 0.2, 0.1], particle_file = 'mini_system.txt', 
 
 
 
-def main_self(dts = [0.1, 0.01, 0.001], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+def main_self(dts = [0.0001], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
     
     uncertainties = {
         "Earth"     : {"period" :[], "perihelion":[], "aphelion":[]},
@@ -136,7 +136,7 @@ def main_self(dts = [0.1, 0.01, 0.001], particle_file = 'mini_system.txt', outfi
         
         start = time.time()
         
-        numstep = numstep_finder(dt, 5)
+        numstep = numstep_finder(dt, 10)
         particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
         #print(data_dictionary)
@@ -166,14 +166,14 @@ def main_self(dts = [0.1, 0.01, 0.001], particle_file = 'mini_system.txt', outfi
     for planet in uncertainties:
         print('\n', planet)
         
-        if planet == "Earth":
-            for i in uncertainties[planet]:
-                print(uncertainties[planet][i]) 
-                
-                
-                plt.title(f"{planet} - {i}")
-                plt.scatter(dts, uncertainties[planet][i])
-                plt.show()
+
+        for i in uncertainties[planet]:
+            print(uncertainties[planet][i]) 
+            
+            
+            # plt.title(f"{planet} - {i}")
+            # plt.scatter(dts, uncertainties[planet][i])
+            # plt.show()
 
 
 
