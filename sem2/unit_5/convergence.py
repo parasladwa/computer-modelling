@@ -189,4 +189,3 @@ determine_converged()
 
 
 
-#main_self(DTS)
