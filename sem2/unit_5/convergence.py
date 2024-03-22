@@ -3,12 +3,6 @@ import template
 import matplotlib.pyplot as plt
 
 
-converged_dict = {
-        "Earth"     : {"period" :[365.2673], "perihelion":[0.9832901531065207], "aphelion":[1.0167364503072678]},
-        "Moon"      : {"period" :[27.320666666666668], "perihelion":[0.0023840651278305433], "aphelion":[0.0027185638321424324]},
-        "Mercury"   : {"period" :[87.9689268292683], "perihelion":[0.30749600308036823], "aphelion":[0.4666988821173607]},
-    }
-
 
 converged_dict = {
         "Earth"     : {"period" :[365.26731], "perihelion":[0.9832901529933032], "aphelion":[1.0167364502944882]},
