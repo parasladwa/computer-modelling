@@ -63,7 +63,7 @@ def within(true, measured, convergence_factor):
     maximum = true+true*convergence_factor
     minimum = true-true*convergence_factor
     
-    if minimum<measured<maximum:
+    if minimum < measured < maximum:
         return True
     
     return False
