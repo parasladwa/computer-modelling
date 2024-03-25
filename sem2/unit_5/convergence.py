@@ -69,7 +69,10 @@ def within(true, measured, convergence_factor):
     return False
 
 
-def main_self(dts = [0.0001], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+
+
+
+def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
     """given parametrers, runs simulation and sorts data into dictionary
 
     Args:
@@ -94,8 +97,8 @@ def main_self(dts = [0.0001], particle_file = 'mini_system.txt', outfile= 'test_
         start = time.time()
         
         #gathers data from simulation
-        numstep = numstep_finder(dt, 10)
-        particles, data, energy_deviation, central_body = template.main(numstep, dt, particle_file, outfile)
+        numstep = numstep_finder(dt, 5)
+        particles, data, energy_deviation, central_body, positions = template.main(numstep, dt, particle_file, outfile)
         data_dictionary = extract_data(data, particles, central_body)
         
         #adds data into measured_values for each simulation
@@ -123,19 +126,20 @@ def main_self(dts = [0.0001], particle_file = 'mini_system.txt', outfile= 'test_
     
     
     #PLOTS 
-#     for planet in measured_values:
-#         print('\n', planet)
+    # for planet in measured_values:
+    #     print('\n', planet)
         
-# ##
-#         for i in measured_values[planet]:
-#             print(measured_values[planet][i]) 
+    #     for i in measured_values[planet]:
+    #         print(measured_values[planet][i]) 
             
             
-#             plt.title(f"{planet} - {i}")
-#             plt.scatter(dts, measured_values[planet][i])
-#             plt.show()
+    #         plt.title(f"{planet} - {i}")
+    #         plt.scatter(dts, measured_values[planet][i])
+    #         plt.show()
 
     return measured_values
+# main_self([1, 0.8, 0.5, 0.3])
+
 
 
 def determine_converged():
@@ -149,7 +153,7 @@ def determine_converged():
     dts=[]
     dt = 5
     
-    CONVERGENCE_FACTOR = 0.001
+    CONVERGENCE_FACTOR = 0.005
     NUM_POINTS = 9 #3 elements per object (3objects)
 
 
@@ -184,7 +188,7 @@ def determine_converged():
     print(dts)
     return dts
 
-determine_converged()
+# determine_converged()
 
 
 

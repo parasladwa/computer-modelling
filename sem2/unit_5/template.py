@@ -62,7 +62,7 @@ def particles_from_file(filename = "mini_system.txt"):
 
     
     
-def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_name = 'outfile.xyz', extra_out = None):
+def main(numstep = 37000, dt=-0.2, particle_file = 'system_omuamua.txt', outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
     to reduced solar system, running simulation of a year,
@@ -94,14 +94,14 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     
     
     
-    print("\n================== SYS ARGS OK ======================")
-
-    
+    print("\n================== SYS ARGS OK ======================")    
     #open outfile
     outfile = open(outfile_name, 'w')
     
     # Initial conditions of the system
     particles = particles_from_file(particle_file)
+    
+        
     time = 0.0
 
     #subtract the centre-of-mass velocity
@@ -109,7 +109,7 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     for particle in particles:
         net_mass += particle.mass
         
-    com_vel = Particle3D.com_velocity(particles)/net_mass ########################################################## ????
+    com_vel = Particle3D.com_velocity(particles)/net_mass
     for particle in particles:
         particle.velocity -= com_vel
 
@@ -122,6 +122,17 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     #compute initial forces for first loop iteration
     separations = b_f.compute_separations(particles)
     forces, potential = b_f.compute_forces_potential(particles, separations)
+
+    stepper = 1
+    OMUAMUA=False
+    for particle in particles:
+        if particle.label == "'Omuamua":
+            dt = -dt
+            OMUAMUA = True
+            print(f"'Omuamua is here so time will run backwards")
+            break
+
+
 
     # Main time integration loop
     for i in range(numstep):
@@ -162,7 +173,14 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
         #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles) + potential
 
-
+        if i == extra_out[1]:
+            for p in particles:
+                if p.label == "'Omuamua":
+                    omuamua_information = [p.position, p.velocity, "OMUAMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"]
+                    omuamua_information = {"date":i*dt,
+                                           "perihelion":None,
+                                           "velocity":p.velocity,
+                                           "neptune_info":None}
     
     '''
     SORT OUT PLOTS=================================================================================
@@ -241,6 +259,14 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     # pyplot.ylabel('y / AU')
     # pyplot.plot(get_positions("Moon")[0] - get_positions("Earth")[0], get_positions("Moon")[1] - get_positions("Earth")[1])
     # pyplot.show()
+    
+    #add a plot of the orbit of the trajectory of the omuamua around the sun
+    # pyplot.title('omuamua - sun Location')
+    # pyplot.xlabel('x / AU')
+    # pyplot.ylabel('y / AU')
+    # pyplot.plot(get_positions("'Omuamua")[0] - get_positions("Sun")[0], get_positions("'Omuamua")[1] - get_positions("Sun")[1])
+    # pyplot.show()
+    
     
 
     # You can add other useful plots here to check the system.
@@ -423,9 +449,9 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
             if (p == central_body) or (p.label == "Moon"):
                 continue
             perihelion, aphelion = calculate_apsides(central_body.label, p.label)
-            # print(f"\nBetween {central_body.label} and {p.label} :")
-            # print(f"    Perihelion = {perihelion} /AU")
-            # print(f"    Aphelion = {aphelion} /AU")
+            print(f"\nBetween {central_body.label} and {p.label} :")
+            print(f"    Perihelion = {perihelion} /AU")
+            print(f"    Aphelion = {aphelion} /AU")
             data_list.append([central_body.label, p.label, perihelion, aphelion])
             particle_pairs.append([central_body.label, p.label])
             
@@ -505,12 +531,18 @@ def main(numstep = 37000, dt=0.01, particle_file = 'mini_system.txt', outfile_na
     find_periods()
     
     
+    
+
 
     
+    if extra_out[0]:
+        print(omuamua_information)
+        
+    return particles, data_list, energy_dev, central_body, positions
     
-    
-    return particles, data_list, energy_dev, central_body
-    
+
+
+
 
 """ __________________ UNIT 5 CHANGES ______________________
 -introduce energy_dev variable
