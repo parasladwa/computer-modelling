@@ -31,11 +31,11 @@ def get_positions(particle_label, positions):
 
 
 
-def main(dts = [0.1], particle_file = 'system_omuamua.txt', outfile= 'test_out.xyz'):
+def main(dts = [0.3815], particle_file = 'system_omuamua.txt', outfile= 'test_out.xyz'):
     dt = dts[0]
     start = time.time()
     
-    numstep = convergence.numstep_finder(dt, 10)
+    numstep = convergence.numstep_finder(dt, 2)
     particles, data, energy_deviation, central_body, positions = template.main(numstep, dts[0], particle_file, outfile)
     data_dictionary = convergence.extract_data(data, particles, central_body)
     

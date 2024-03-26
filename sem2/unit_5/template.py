@@ -62,7 +62,7 @@ def particles_from_file(filename = "mini_system.txt"):
 
     
     
-def main(numstep = 37000, dt=-0.2, particle_file = 'system_omuamua.txt', outfile_name = 'outfile.xyz', extra_out = [False, None]):
+def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
     to reduced solar system, running simulation of a year,
@@ -269,7 +269,6 @@ def main(numstep = 37000, dt=-0.2, particle_file = 'system_omuamua.txt', outfile
     
     
 
-    # You can add other useful plots here to check the system.
     
     
     
@@ -525,10 +524,27 @@ def main(numstep = 37000, dt=-0.2, particle_file = 'system_omuamua.txt', outfile
             if period == None:
                 print(f"\ninsufficient data to deduce orbital perid between {pair[0]} and {pair[1]}")
                 continue
-            #print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days\n\n")
+            print(f"\norbital period between {pair[0]} and {pair[1]} = {period} days\n\n")
             data_list[index].append(period)
             
     find_periods()
+    
+    
+    
+    
+    # total plot
+    print(extra_out[0])
+    if extra_out[0]:
+        pyplot.title('Plot of system')
+        pyplot.xlabel('x / AU')
+        pyplot.ylabel('y / AU')
+        for particle in particles:
+            if particle.label == central_body.label:
+                continue
+            pyplot.plot(get_positions(particle.label)[0], get_positions(particle.label)[1], label = particle.label)
+        pyplot.legend()
+        pyplot.show()
+    
     
     
     

@@ -72,7 +72,7 @@ def within(true, measured, convergence_factor):
 
 
 
-def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'):
+def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz', plots = False):
     """given parametrers, runs simulation and sorts data into dictionary
 
     Args:
@@ -90,15 +90,17 @@ def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out
         "Moon"      : {"period" :[], "perihelion":[], "aphelion":[]},
         "Mercury"   : {"period" :[], "perihelion":[], "aphelion":[]},
     }
-    
+    energies = []
     
     for dt in dts:
         
         start = time.time()
         
+        
         #gathers data from simulation
-        numstep = numstep_finder(dt, 5)
+        numstep = numstep_finder(dt, 10)
         particles, data, energy_deviation, central_body, positions = template.main(numstep, dt, particle_file, outfile)
+        energies.append(energy_deviation)
         data_dictionary = extract_data(data, particles, central_body)
         
         #adds data into measured_values for each simulation
@@ -125,20 +127,36 @@ def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out
         print(f"time elapsed = {end-start}\n\n")  
     
     
-    #PLOTS 
-    # for planet in measured_values:
-    #     print('\n', planet)
-        
-    #     for i in measured_values[planet]:
-    #         print(measured_values[planet][i]) 
+    #energy plot
+    if plots:
+        print(dts, energies)
+        plt.title('Energy deviation with varying dts')
+        plt.xlabel('dts / days')
+        plt.ylabel('Energy deviation')
+        plt.scatter(dts, energies)
+        plt.show()
+    
+    #PLOTS
+    if plots:
+        for planet in measured_values:
+            print('\n', planet)
             
-            
-    #         plt.title(f"{planet} - {i}")
-    #         plt.scatter(dts, measured_values[planet][i])
-    #         plt.show()
+            for i in measured_values[planet]:
+                print(measured_values[planet][i]) 
+                
+                
+                plt.title(f"{planet} - {i}")
+                plt.xlabel('dt /days')
+                if i == 'period':
+                    plt.ylabel('period /days')
+                else:
+                    plt.ylabel(f"{i} /AU")
+                plt.scatter(dts, measured_values[planet][i])
+                plt.axhline(y=converged_dict[planet][i], color='r', linestyle='--', label=f'value of convergence')
+                plt.legend()
+                plt.show()
 
     return measured_values
-# main_self([1, 0.8, 0.5, 0.3])
 
 
 
@@ -151,7 +169,7 @@ def determine_converged():
     
     success = False
     dts=[]
-    dt = 5
+    dt = 4
     
     CONVERGENCE_FACTOR = 0.005
     NUM_POINTS = 9 #3 elements per object (3objects)
@@ -188,8 +206,14 @@ def determine_converged():
     print(dts)
     return dts
 
-# determine_converged()
 
 
+
+
+
+dts = determine_converged()
+
+main_self(dts = dts, plots = False)
+print(dts[-1])
 
 
