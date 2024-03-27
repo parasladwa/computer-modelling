@@ -93,6 +93,7 @@ def main(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'
     energies = []
     
     for dt in dts:
+        #iterates through timesteps and stores data into dictionary
         
         start = time.time()
         
@@ -163,20 +164,23 @@ def main(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz'
 def determine_converged():
     """runs simulation with smaller and smaller dts
     until convergence is reached based off data found from simulation
-    with timestep of 0.0001 . reduces dt by 10% each iteration till all
-    variables are converged.  
+    with timestep of 0.0001 . reduces dt by 10% each iteration unitil all
+    variables are considered converged.  
     """
     
+    #bool holding total systems convergence state
     success = False
     dts=[]
     dt = 4
     
+    #factor for which convergence is determined ie 5%
     CONVERGENCE_FACTOR = 0.005
-    NUM_POINTS = 9 #3 elements per object (3objects)
+    NUM_POINTS = 9 #3 elements per object (3objects) (apsides and period)
 
 
     while success == False:
         
+        #gather data from main
         measured = main([dt])
         converged_counter = 0
         dts.append(dt)
@@ -192,14 +196,15 @@ def determine_converged():
                     print(f"{planet} {i} CONVERGED")
                     
                 else:
-                    print(f"{planet} {i} no")
+                    print(f"{planet} {i}---------------NOT CONVERGED")
                      
         print(f"counter = {converged_counter}")   
-                
+        
+        #checks state of this run
         if converged_counter == NUM_POINTS:
             success = True
             
-        else:
+        else:#reduce dt by 10%
             dt*=.9
         
     print(f"converged at {dt}")
@@ -209,27 +214,7 @@ def determine_converged():
 
 
 
-
-
-# dts = determine_converged()
-# main(dts = dts, plots = True)
-# print(f"convergence found at {dts[-1]} days")
-
-
-# if __name__ == "__main__":
-#     main()
-
-
-
-
-
-
-
-
-
-
-
-
+#runs convergence rountine if this file is run
 if __name__ == "__main__":
     dts = determine_converged()
     main(dts = dts, plots = True)
