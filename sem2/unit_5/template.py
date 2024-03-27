@@ -61,7 +61,8 @@ def particles_from_file(filename = "mini_system.txt"):
 
 
     
-def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outfile_name = 'outfile.xyz', extra_out = [False, None]):
+def main(numstep = 36525, dt=0.3815, particle_file = 'mini_system.txt',
+         outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
     to reduced solar system, running simulation of a year,
@@ -170,6 +171,9 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
         #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles) + potential
 
+        #extra out indicates when perihelion occurs
+        #when timestep is at perihelion for omuamoua
+        #data is then stored and returned at end of main function
         omuamua_information = {}
         if i == extra_out[1]:
             for p in particles:
@@ -530,7 +534,6 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
     
     
     # total plot
-    print(extra_out[0])
     if extra_out[0]:
         pyplot.title('Plot of system')
         pyplot.xlabel('x / AU')
@@ -548,7 +551,7 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
 
 
 
-        
+    #returns for other files
     return particles, data_list, energy_dev, central_body, positions, omuamua_information
     
 
@@ -559,6 +562,8 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
 -introduce energy_dev variable
 -data_list
 -change params
+-omuamua dictoinary at given timestep
+-extra out parameter for omuamau
 """
     
     
