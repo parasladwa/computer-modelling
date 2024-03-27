@@ -61,7 +61,6 @@ def particles_from_file(filename = "mini_system.txt"):
 
 
     
-    
 def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
@@ -91,9 +90,7 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
     #     print("Incorrect sys argv's\nCorrect form as follows :")
     #     print("%run template.py <numstep> <dt> <particle file> <xyz outfile> <OPTIONAL out>")
     #     sys.exit(1)
-    
-    
-    
+        
     print("\n================== SYS ARGS OK ======================")    
     #open outfile
     outfile = open(outfile_name, 'w')
@@ -173,18 +170,16 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
         #compute the kinetic energy and save the total energy
         energy[i] = Particle3D.total_kinetic_energy(particles) + potential
 
+        omuamua_information = {}
         if i == extra_out[1]:
             for p in particles:
                 if p.label == "'Omuamua":
-                    omuamua_information = [p.position, p.velocity, "OMUAMUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"]
                     omuamua_information = {"date":i*dt,
-                                           "perihelion":None,
+                                           "perihelion":p.position,
                                            "velocity":p.velocity,
                                            "neptune_info":None}
     
-    '''
-    SORT OUT PLOTS=================================================================================
-    '''
+
         
     #dictionary of particle locations
     #maybe move this into get_positions function to 
@@ -435,9 +430,9 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
         #perigee / apogee case
         if  ("Moon" and "Earth") in particle_labels:
             perigee, apogee = calculate_apsides("Moon", "Earth")
-            # print(f"\nBetween the Moon and Earth :")
-            # print(f"    Perigee = {perigee} /AU")
-            # print(f"    Apogee = {apogee} /AU")
+            print(f"\nBetween the Moon and Earth :")
+            print(f"    Perigee = {perigee} /AU")
+            print(f"    Apogee = {apogee} /AU")
             data_list.append(["Moon", "Earth", perigee, apogee])
             particle_pairs.append(["Moon", "Earth"])
         
@@ -454,6 +449,8 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
             data_list.append([central_body.label, p.label, perihelion, aphelion])
             particle_pairs.append([central_body.label, p.label])
             
+            #add perihelion to omuamua dict
+
         return particle_pairs
     
     pairs = apsides()
@@ -550,11 +547,9 @@ def main(numstep = 36525*10, dt=0.3815, particle_file = 'solar_system.txt', outf
     
 
 
-    
-    if extra_out[0]:
-        print(omuamua_information)
+
         
-    return particles, data_list, energy_dev, central_body, positions
+    return particles, data_list, energy_dev, central_body, positions, omuamua_information
     
 
 

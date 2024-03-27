@@ -72,7 +72,7 @@ def within(true, measured, convergence_factor):
 
 
 
-def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz', plots = False):
+def main(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out.xyz', plots = False):
     """given parametrers, runs simulation and sorts data into dictionary
 
     Args:
@@ -99,7 +99,7 @@ def main_self(dts = [0.1], particle_file = 'mini_system.txt', outfile= 'test_out
         
         #gathers data from simulation
         numstep = numstep_finder(dt, 10)
-        particles, data, energy_deviation, central_body, positions = template.main(numstep, dt, particle_file, outfile)
+        particles, data, energy_deviation, central_body, positions, omuamua = template.main(numstep, dt, particle_file, outfile)
         energies.append(energy_deviation)
         data_dictionary = extract_data(data, particles, central_body)
         
@@ -177,7 +177,7 @@ def determine_converged():
 
     while success == False:
         
-        measured = main_self([dt])
+        measured = main([dt])
         converged_counter = 0
         dts.append(dt)
         
@@ -211,9 +211,12 @@ def determine_converged():
 
 
 
-dts = determine_converged()
+# dts = determine_converged()
 
-main_self(dts = dts, plots = False)
-print(dts[-1])
+# main(dts = dts, plots = False)
+# print(dts[-1])
 
 
+
+if __name__ == "__main__":
+    main()
