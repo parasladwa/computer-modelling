@@ -218,4 +218,4 @@ def determine_converged():
 if __name__ == "__main__":
     dts = determine_converged()
     main(dts = dts, plots = True)
-    print(f"convergence found at {dts[-1]} days")
+    print(f"\nconvergence found at {dts[-1]} days")

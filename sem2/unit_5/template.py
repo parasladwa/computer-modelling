@@ -13,10 +13,9 @@ s2188899
 import numpy as np
 import matplotlib.pyplot as pyplot
 from particle3D import Particle3D
-import sys
-import math
 import scipy
 #import scipy.optimize
+#import sys
 import basic_functions as b_f
 
 
@@ -61,7 +60,7 @@ def particles_from_file(filename = "mini_system.txt"):
 
 
     
-def main(numstep = 36525, dt=0.3815, particle_file = 'mini_system.txt',
+def main(numstep = 36525*5, dt=0.3815, particle_file = 'mini_system.txt',
          outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
