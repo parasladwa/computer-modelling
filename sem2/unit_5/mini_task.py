@@ -109,8 +109,8 @@ def main(dts = [0.3815], particle_file = 'system_omuamua.txt', outfile= 'test_ou
         sun = np.array([sun_posns[0][i], sun_posns[1][i], sun_posns[2][i]])
         distance = np.linalg.norm(sun-omuamua)
         if distance == omuamua_perihelion:
-            print(f"\n\n'Omuamua was at its perihelion on {(START_DATE-timedelta(days=i*dt))}") 
-       
+            string_to_print=f"'Omuamua was at its perihelion on {(START_DATE-timedelta(days=i*dt))}"
+            print('\n\n', string_to_print)
     #runs simulation again with calculated timestep of oumuamua perihelion
     particles, data, energy_deviation, central_body, positions, omuamua_information = template.main(numstep, dts[0], particle_file, outfile, extra_out=[True, i])
 
@@ -147,7 +147,7 @@ def main(dts = [0.3815], particle_file = 'system_omuamua.txt', outfile= 'test_ou
     print(f"'Omuamua velocity at perihelion = {np.linalg.norm(np.array(omuamua_information['velocity']))}")
     print(f"'Omuamua escape velocity : {escape_velocity} AU / day")
     print(f"'Omuamua perihelion = {omuamua_perihelion} AU")
-
+    print(string_to_print)
 
 
 #runs main if this file is run directly

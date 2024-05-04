@@ -60,7 +60,7 @@ def particles_from_file(filename = "mini_system.txt"):
 
 
     
-def main(numstep = 36525*5, dt=0.3815, particle_file = 'mini_system.txt',
+def main(numstep = 36525*1, dt=0.3815, particle_file = 'mini_system.txt',
          outfile_name = 'outfile.xyz', extra_out = [False, None]):
     '''
     implementing verlet velocity integration scheme
@@ -217,55 +217,9 @@ def main(numstep = 36525*5, dt=0.3815, particle_file = 'mini_system.txt',
         return x, y, z
     
 
-  
 
-    
-    # Make two plots, of the Mercury - Sun x distance,
-    # and of the trajectory x-vs-y of the Earth's orbit.
-    # pyplot.title('Mercury-Sun Location')
-    # pyplot.xlabel('time / days')
-    # pyplot.ylabel('x / AU')
-    # pyplot.plot(times, get_positions("Mercury")[0] - get_positions("Sun")[0])
-    # pyplot.show()
-
-
-    # pyplot.title('Earth Trajectory')
-    # pyplot.xlabel('x / AU')
-    # pyplot.ylabel('y / AU')
-    # pyplot.plot(get_positions("Earth")[0],  get_positions("Earth")[1])
-    # pyplot.show()
-
-
-    # pyplot.title('Total Energy')
-    # pyplot.xlabel('x / days')
-    # pyplot.ylabel('Energy / M_earth AU^2 / day^2')
-    # pyplot.plot(times, energy)
-    # pyplot.show()
-
-
-    # #add a plot of the position of the sun with time
-    # pyplot.title('Sun Trajectory')
-    # pyplot.ylabel('x / AU')
-    # pyplot.ylabel('y / AU')
-    # pyplot.plot(get_positions("Sun")[0], get_positions("Sun")[1])
-    # pyplot.show()
-
-
-    # #add a plot of the orbit of the trajectory of the moon around the earth
-    # pyplot.title('Moon - Earth Location')
-    # pyplot.xlabel('x / AU')
-    # pyplot.ylabel('y / AU')
-    # pyplot.plot(get_positions("Moon")[0] - get_positions("Earth")[0], get_positions("Moon")[1] - get_positions("Earth")[1])
-    # pyplot.show()
-    
-    #add a plot of the orbit of the trajectory of the omuamua around the sun
-    # pyplot.title('omuamua - sun Location')
-    # pyplot.xlabel('x / AU')
-    # pyplot.ylabel('y / AU')
-    # pyplot.plot(get_positions("'Omuamua")[0] - get_positions("Sun")[0], get_positions("'Omuamua")[1] - get_positions("Sun")[1])
-    # pyplot.show()
-    
-    
+            
+        
 
     
     
@@ -530,6 +484,27 @@ def main(numstep = 36525*5, dt=0.3815, particle_file = 'mini_system.txt',
     find_periods()
     
     
+    #plot of each body around the sun
+    if extra_out[0]:
+        for particle in particles:
+            if particle.label == central_body.label:
+                continue
+                
+            pyplot.title(f"{particle.label}-Sun orbit")
+            pyplot.xlabel('x / days')
+            pyplot.ylabel('y / days')
+            pyplot.plot(get_positions(particle.label)[0] - get_positions("Sun")[0], get_positions(particle.label)[1] - get_positions("Sun")[1])
+            pyplot.show()
+        
+        
+        if ('Moon' in particle_dict) and ('Earth' in particle_dict):
+            pyplot.title(f"Moon-Earth orbit")
+            pyplot.xlabel('x / days')
+            pyplot.ylabel('y / days')
+            pyplot.plot(get_positions('Moon')[0] - get_positions("Earth")[0], get_positions('Moon')[1] - get_positions("Earth")[1])
+            pyplot.show()
+
+    
     
     
     # total plot
@@ -543,12 +518,9 @@ def main(numstep = 36525*5, dt=0.3815, particle_file = 'mini_system.txt',
             pyplot.plot(get_positions(particle.label)[0], get_positions(particle.label)[1], label = particle.label)
         pyplot.legend()
         pyplot.show()
+        
     
     
-    
-    
-
-
 
     #returns for other files
     return particles, data_list, energy_dev, central_body, positions, omuamua_information

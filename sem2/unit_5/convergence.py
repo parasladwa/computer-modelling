@@ -208,7 +208,7 @@ def determine_converged():
             dt*=.9
         
     print(f"converged at {dt}")
-    print(dts)
+    #print(dts)
     return dts
 
 
